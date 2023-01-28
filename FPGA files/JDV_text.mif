@@ -1,0 +1,1520 @@
+DEPTH = 16384;
+WIDTH = 32;
+ADDRESS_RADIX = HEX;
+DATA_RADIX = HEX;
+CONTENT
+BEGIN
+00000000 : 00001317;   % 19: 	call	PrintTelaDificuldades		 %
+00000001 : 4b8300e7;   % 19:  %
+00000002 : 00000b93;   % 20: 	li	s7, 0 				# inicia com o valor do simbolo escolhido pelo jogador como zero %
+00000003 : 00001317;   % 21: 	call	PrintTelaSimbolos %
+00000004 : 448300e7;   % 21:  %
+00000005 : 00000513;   % 22: 	li	a0, 0 %
+00000006 : 0fc15597;   % 24: 	la	a1, Image10 			# O selecionado %
+00000007 : 93458593;   % 24:  %
+00000008 : 0fc13617;   % 25: 	la	a2, Image7 			# X nao selecionado %
+00000009 : 65460613;   % 25:  %
+0000000a : 0fc14717;   % 26: 	la	a4, Image8 			# X selecionado %
+0000000b : c9470713;   % 26:  %
+0000000c : 0fc14797;   % 27: 	la	a5, Image9 			# O nao selecionado %
+0000000d : 2d478793;   % 27:  %
+0000000e : ff200337;   % 28: 	li 	t1, 0xFF200000 			# carrega o endereco de controle do KDMMIO %
+0000000f : 00030313;   % 28:  %
+00000010 : 00032283;   % 29: 	lw 	t0, 0(t1) 			# le bit de Controle Teclado %
+00000011 : 0012f293;   % 30: 	andi 	t0, t0, 0x0001 			# mascara o bit menos significativo %
+00000012 : 04028063;   % 31:    	beq 	t0, zero, FIM_Setup1 		# se nao ha tecla pressionada entao vai para FIM %
+00000013 : 00432383;   % 32:   	lw 	t2, 4(t1) 			# le o valor da tecla teclada %
+00000014 : 00a00293;   % 33: 	li 	t0, '\n' 			# carrega o valor da tecla enter em t0 %
+00000015 : 00729663;   % 34: 	bne 	t0, t2, Char_Esquerda_Setup1 	# se t2 nao foi igual a t0 pula para a label %
+00000016 : 00ab8bb3;   % 35: 	add 	s7, s7, a0 			# ate aqui a0 ainda eh o resultado de Movimenta_Setup %
+00000017 : 0300006f;   % 36: 	j	Exit_Setup1 			# pula para a label Exit_Setup %
+00000018 : 06100293;   % 38:    	li 	t0, 'a' 			# carrega o codigo ascii de a no registrador t0 %
+00000019 : 00729863;   % 39:   	bne 	t0, t2, Char_Direita_Setup1 	# verifica se o valor de t0 nao eh igual ao valor em t2 e se nao for pula pra label %
+0000001a : fff00513;   % 40:   	li 	a0, -1 				# carrega em a0 -1 para indicar que esta indo para esquerda %
+0000001b : 00001317;   % 41:   	call	Movimenta_Setup1 		# chama a funcao movimenta para movimentar o navegador %
+0000001c : f34300e7;   % 41:  %
+0000001d : 06400293;   % 43: 	li 	t0, 'd' 			# carrega o codigo ascii de d no registrador t0 %
+0000001e : 00729863;   % 44:   	bne 	t0, t2, FIM_Setup1 		# verifica se o valor de t0 nao eh igual ao valor em t2 e se nao for pula pra label %
+0000001f : 00100513;   % 45:   	li 	a0, 1 				# carrega em a0 1 para indicar que esta indo para direita %
+00000020 : 00001317;   % 46:   	call	Movimenta_Setup1 		# chama a funcao movimenta para movimentar o navegador %
+00000021 : f20300e7;   % 46:  %
+00000022 : f91ff06f;   % 48: 	j 	LOOP1 				# pula para a label LOOP1 %
+00000023 : 00100693;   % 50: 	li	a3, 1 				# troca o frame que estava %
+00000024 : ff2002b7;   % 51: 	li 	t0, 0xFF200604 			# endereco usado para informar para o bit display que trocamos de frame %
+00000025 : 60428293;   % 51:  %
+00000026 : 00000493;   % 52: 	li	s1, 0 				# inicializa a onde o navegador esta %
+00000027 : 00d2a023;   % 53: 	sw 	a3, 0(t0) 			# salva no endereco que informa que trocamos de frame o conteudo de a3 %
+00000028 : 00000693;   % 54: 	li	a3, 0 				# frame = 0 %
+00000029 : 00001317;   % 55: 	call	PrintTabuleiro			# imprime o fundo no frame em a3 (0 ou 1) %
+0000002a : 48c300e7;   % 55:  %
+0000002b : 00100693;   % 56: 	li 	a3, 1 				# estabelece o frame em que o loop2 vai atuar %
+0000002c : 00000813;   % 57: 	li	a6, 0 				# carrega em a6 o argumento da funcao Movimenta_Setup2 %
+0000002d : 00000513;   % 58: 	li	a0, 0 %
+0000002e : ff200337;   % 60: 	li 	t1, 0xFF200000 			# carrega o endereco de controle do KDMMIO %
+0000002f : 00030313;   % 60:  %
+00000030 : 00032283;   % 61: 	lw 	t0, 0(t1) 			# le bit de Controle Teclado %
+00000031 : 0012f293;   % 62: 	andi 	t0, t0,0x0001 			# mascara o bit menos significativo %
+00000032 : 04028063;   % 63:    	beq 	t0, zero,FIM_Setup2 		# se nao ha tecla pressionada entao vai para FIM %
+00000033 : 00432383;   % 64:   	lw 	t2, 4(t1) 			# le o valor da tecla teclada %
+00000034 : 00a00293;   % 65: 	li 	t0, '\n' 			# carrega o valor da tecla enter em t0 %
+00000035 : 00729663;   % 66: 	bne 	t0, t2,Char_Esquerda_Setup2 	# se t2 nao foi igual a t0 pula para a label %
+00000036 : 00a484b3;   % 67: 	add 	s1, s1, a0 			# ate aqui a0 ainda eh o resultado de Movimenta_Setup %
+00000037 : 0300006f;   % 68: 	j	Exit_Setup2 			# pula para a label Exit_Setup %
+00000038 : 06100293;   % 70:    	li 	t0, 'a' 			# carrega o codigo ascii de a no registrador t0 %
+00000039 : 00729863;   % 71:   	bne 	t0, t2,Char_Direita_Setup2 	# verifica se o valor de t0 nao eh igual ao valor em t2 e se nao for pula pra label %
+0000003a : fff00513;   % 72:   	li 	a0, -1 				# carrega em a0 -1 para indicar que esta indo para esquerda %
+0000003b : 00001317;   % 73:   	call	Movimenta_Setup2 		# chama a funcao movimenta para movimentar o navegador %
+0000003c : f20300e7;   % 73:  %
+0000003d : 06400293;   % 75: 	li 	t0, 'd' 			# carrega o codigo ascii de d no registrador t0 %
+0000003e : 00729863;   % 76:   	bne 	t0, t2,FIM_Setup2 		# verifica se o valor de t0 nao eh igual ao valor em t2 e se nao for pula pra label %
+0000003f : 00100513;   % 77:   	li 	a0, 1 				# carrega em a0 1 para indicar que esta indo para direita %
+00000040 : 00001317;   % 78:   	call	Movimenta_Setup2 		# chama a funcao movimenta para movimentar o navegador %
+00000041 : f0c300e7;   % 78:  %
+00000042 : fb1ff06f;   % 80: 	j 	LOOP2 				# pula para a label LOOP2 %
+00000043 : 00000693;   % 82: 	li	a3, 0 				# troca o frame ques estava %
+00000044 : ff2002b7;   % 83: 	li 	t0, 0xFF200604 			# endereco usado para informar para o bit display que trocamos de frame %
+00000045 : 60428293;   % 83:  %
+00000046 : 00d2a023;   % 84: 	sw 	a3, 0(t0) 			# salva no endereco que informa que trocamos de frame o conteudo de a3 %
+00000047 : 00100693;   % 86: 	li	a3, 1 				# frame = 1 %
+00000048 : 00001317;   % 87: 	call	PrintTabuleiro %
+00000049 : 410300e7;   % 87:  %
+0000004a : 00000d13;   % 89: 	li	s10, 0 %
+0000004b : 00000a13;   % 90: 	li	s4, 0 %
+0000004c : 00000993;   % 91: 	li	s3, 0 %
+0000004d : 00900d93;   % 92: 	li 	s11, 9 %
+0000004e : 00000c13;   % 93: 	li	s8, 0 %
+0000004f : 0fc12517;   % 94: 	la 	a0, Image5 			# carrega o endereco do seletor %
+00000050 : 32050513;   % 94:  %
+00000051 : 03c00593;   % 95: 	li 	a1, 60 				# x = 0 %
+00000052 : 01800613;   % 96: 	li 	a2, 24 				# y = 0 %
+00000053 : 00000693;   % 97: 	li	a3, 0 %
+00000054 : 00001317;   % 98: 	call 	PRINTSeletor 			# chama a funcao print %
+00000055 : 24c300e7;   % 98:  %
+00000056 : 00000317;   % 101: 	call	Controle 			# chama a funcao controle que controla os movimentos do jogador %
+00000057 : 3d4300e7;   % 101:  %
+00000058 : 014982b3;   % 102: 	add	t0, s3, s4 %
+00000059 : 01a282b3;   % 103: 	add	t0, t0, s10 %
+0000005a : 0142a313;   % 104: 	slti	t1, t0, 20 %
+0000005b : 00031463;   % 105: 	bnez	t1, PulaExit %
+0000005c : 1c00006f;   % 106: 	j	Exit %
+0000005d : 000d8a63;   % 108: 	beqz	s11, Empate %
+0000005e : 000c0663;   % 110: 	beqz	s8, Fim   			# turn = 0 => vez eh do usuario %
+0000005f : 00001317;   % 111: 	call 	jogada_pc 			# chama a funcao jogada pc que controla os movimentos da maquina %
+00000060 : d0c300e7;   % 111:  %
+00000061 : fd5ff06f;   % 113: 	j 	Game_Loop 			# faz um loop infinito %
+00000062 : 00198993;   % 116: 	addi	s3, s3, 1 %
+00000063 : 0ac0006f;   % 117: 	j	Reinicia_Board %
+00000064 : 00900d93;   % 119: 	li	s11, 9 %
+00000065 : 0149a293;   % 120: 	slti	t0, s3, 20 %
+00000066 : 00029463;   % 121: 	bnez	t0, condicao_3 %
+00000067 : 1940006f;   % 122: 	j	Exit %
+00000068 : fd9ff06f;   % 124: 	j	Voltaempate %
+00000069 : 0028a293;   % 126: 	slti	t0, a7, 2 %
+0000006a : 06400593;   % 127: 	li	a1, 100 %
+0000006b : 00800613;   % 128: 	li	a2, 8 %
+0000006c : 00028a63;   % 129: 	beqz 	t0, DecideQuemAumenta1	 %
+0000006d : 12800593;   % 130: 	li 	a1, 296 %
+0000006e : 001a0a13;   % 131: 	addi	s4, s4, 1 %
+0000006f : 01400333;   % 132: 	mv 	t1, s4 %
+00000070 : 00c0006f;   % 133: 	j	DecideQuemAumenta2 %
+00000071 : 001d0d13;   % 135: 	addi	s10, s10, 1 %
+00000072 : 01a00333;   % 136: 	mv 	t1, s10 %
+00000073 : 00600cb3;   % 138: 	mv	s9, t1 %
+00000074 : 00100293;   % 139: 	li	t0, 1 %
+00000075 : 005c9663;   % 140: 	bne	s9, t0, pula_1 %
+00000076 : 0fc17517;   % 141: 	la	a0, Image18 			# 1 %
+00000077 : 36c50513;   % 141:  %
+00000078 : 00200293;   % 143: 	li	t0, 2 %
+00000079 : 005c9663;   % 144: 	bne	s9, t0, pula_2 %
+0000007a : 0fc17517;   % 145: 	la	a0, Image19 			# 2 %
+0000007b : 3c450513;   % 145:  %
+0000007c : 00300293;   % 147: 	li	t0, 3 %
+0000007d : 005c9663;   % 148: 	bne	s9, t0, pula_3 %
+0000007e : 0fc17517;   % 149: 	la	a0, Image20 			# 3 %
+0000007f : 41c50513;   % 149:  %
+00000080 : 00400293;   % 151: 	li	t0, 4 %
+00000081 : 005c9663;   % 152: 	bne	s9, t0, pula_4 %
+00000082 : 0fc17517;   % 153: 	la	a0, Image21 			# 4 %
+00000083 : 47450513;   % 153:  %
+00000084 : 00500293;   % 155: 	li	t0, 5 %
+00000085 : 005c9663;   % 156: 	bne	s9, t0, Imprime %
+00000086 : 0fc17517;   % 157: 	la	a0, Image22 			# 5 %
+00000087 : 4cc50513;   % 157:  %
+00000088 : 00000693;   % 159: 	li	a3, 0 %
+00000089 : 00001317;   % 160: 	call	PRINT %
+0000008a : e98300e7;   % 160:  %
+0000008b : 00100693;   % 161: 	li	a3, 1 %
+0000008c : 00001317;   % 162: 	call	PRINT %
+0000008d : e8c300e7;   % 162:  %
+0000008e : 03c00313;   % 164: 	li	t1, 60 %
+0000008f : 01800393;   % 165: 	li	t2, 24 %
+00000090 : 00300e13;   % 166: 	li	t3, 3 %
+00000091 : 00300e93;   % 168: 	li	t4, 3 %
+00000092 : 0fc20517;   % 170: 	la	a0, Casa			# casa branca Image23 %
+00000093 : f3450513;   % 170:  %
+00000094 : 006005b3;   % 171: 	mv	a1, t1 %
+00000095 : 00700633;   % 172: 	mv	a2, t2 %
+00000096 : 00000693;   % 173: 	li	a3, 0 %
+00000097 : 006008b3;   % 174: 	mv	a7, t1 %
+00000098 : 00700833;   % 175: 	mv	a6, t2 %
+00000099 : 01d007b3;   % 176: 	mv	a5, t4 %
+0000009a : 01c00733;   % 177: 	mv	a4, t3 %
+0000009b : 00001317;   % 178: 	call	PRINT %
+0000009c : e50300e7;   % 178:  %
+0000009d : 00100693;   % 179: 	li	a3, 1 %
+0000009e : 00001317;   % 180: 	call	PRINT %
+0000009f : e44300e7;   % 180:  %
+000000a0 : 00f00eb3;   % 181: 	mv	t4, a5 %
+000000a1 : 00e00e33;   % 182: 	mv	t3, a4 %
+000000a2 : 01100333;   % 183: 	mv 	t1, a7 %
+000000a3 : 010003b3;   % 184: 	mv	t2, a6 %
+000000a4 : fffe8e93;   % 185: 	addi	t4, t4, -1 %
+000000a5 : 04430313;   % 186: 	addi	t1, t1, 68 %
+000000a6 : fa0e98e3;   % 187: 	bnez	t4, Loop_reinicia2 %
+000000a7 : f3430313;   % 188: 	addi	t1, t1, -204 %
+000000a8 : fffe0e13;   % 189: 	addi	t3, t3, -1 %
+000000a9 : 04438393;   % 190: 	addi	t2, t2, 68 %
+000000aa : f80e1ee3;   % 191: 	bnez	t3, Loop_reinicia1 %
+000000ab : 0fc10297;   % 192: 	la	t0, posicao_seletor %
+000000ac : d7828293;   % 192:  %
+000000ad : 03c00313;   % 193: 	li	t1, 60 %
+000000ae : 00629023;   % 194: 	sh	t1, 0(t0) %
+000000af : 01800313;   % 195: 	li	t1, 24 %
+000000b0 : 00629123;   % 196: 	sh	t1, 2(t0) %
+000000b1 : 0fc10297;   % 197: 	la	t0, posicao_seletor_velha %
+000000b2 : d6428293;   % 197:  %
+000000b3 : 03c00313;   % 198: 	li	t1, 60 %
+000000b4 : 00629023;   % 199: 	sh	t1, 0(t0) %
+000000b5 : 01800313;   % 200: 	li	t1, 24 %
+000000b6 : 00629123;   % 201: 	sh	t1, 2(t0) %
+000000b7 : 0fc10297;   % 202: 	la	t0, BOARD %
+000000b8 : d2428293;   % 202:  %
+000000b9 : 00000393;   % 203: 	li	t2, 0 %
+000000ba : 0002a023;   % 205: 	sw	zero, 0(t0) %
+000000bb : 00428293;   % 206: 	addi	t0, t0, 4 %
+000000bc : 00138393;   % 207: 	addi	t2, t2, 1 %
+000000bd : 0093ae13;   % 208: 	slti	t3, t2, 9 %
+000000be : fe0e18e3;   % 209: 	bnez	t3, Loop_limpaBoard %
+000000bf : 0fc12517;   % 210: 	la 	a0, Image5 			# carrega o seletor %
+000000c0 : 16050513;   % 210:  %
+000000c1 : 00100693;   % 211: 	li	a3, 1 %
+000000c2 : 03c00593;   % 212: 	li 	a1, 60 				# x = 0 %
+000000c3 : 01800613;   % 213: 	li 	a2, 24 				# y = 0 %
+000000c4 : 00001317;   % 214: 	call 	PRINTSeletor %
+000000c5 : 08c300e7;   % 214:  %
+000000c6 : 00000693;   % 215: 	li	a3, 0 %
+000000c7 : 00001317;   % 216: 	call 	PRINTSeletor 			# chama a funcao print %
+000000c8 : 080300e7;   % 216:  %
+000000c9 : e60d86e3;   % 217: 	beqz	s11, volta %
+000000ca : 00900d93;   % 218: 	li	s11, 9 %
+000000cb : 4980006f;   % 219: 	j	Fim_ganha %
+000000cc : 014982b3;   % 222: 	add	t0, s3, s4 %
+000000cd : 01a282b3;   % 223: 	add	t0, t0, s10 %
+000000ce : 0142a313;   % 224: 	slti	t1, t0, 20 %
+000000cf : 00031a63;   % 225: 	bnez	t1, Pula20Partidas %
+000000d0 : 034d4a63;   % 226: 	blt	s10, s4, EscolheGanhador1 %
+000000d1 : 05aa4663;   % 227: 	bgt	s10, s4, EscolheGanhador2 %
+000000d2 : 01a989b3;   % 228: 	add 	s3, s3, s10 %
+000000d3 : 014989b3;   % 229: 	add 	s3, s3, s4 %
+000000d4 : 01400293;   % 231: 	li	t0, 20 %
+000000d5 : 00599c63;   % 232: 	bne	s3, t0, pula_empate %
+000000d6 : 0fc24c97;   % 233: 	la	s9, Tie 			# tie branco Image29 %
+000000d7 : b74c8c93;   % 233:  %
+000000d8 : 0fc24d17;   % 234: 	la	s10, Tie2 			# tie amarelo Image30 %
+000000d9 : 574d0d13;   % 234:  %
+000000da : 00000313;   % 235: 	li	t1, 0 %
+000000db : 00500293;   % 237: 	li	t0, 5 %
+000000dc : 005a1c63;   % 238: 	bne	s4, t0, pula_perde %
+000000dd : 0fc25c97;   % 240: 	la	s9, Over 			# game over branco Image31 %
+000000de : f68c8c93;   % 240:  %
+000000df : 0fc26d17;   % 241: 	la	s10, Over2 			# game over vermelho Image32 %
+000000e0 : 968d0d13;   % 241:  %
+000000e1 : fff00313;   % 242: 	li	t1, -1 %
+000000e2 : 00500293;   % 244: 	li	t0, 5 %
+000000e3 : 005d1c63;   % 245: 	bne	s10, t0, Fim_decideGanhador %
+000000e4 : 0fc22c97;   % 247: 	la	s9, Win 			# you win branco Image29 %
+000000e5 : 72cc8c93;   % 247:  %
+000000e6 : 0fc23d17;   % 248: 	la	s10, Win2	 		# you win verde Image30 %
+000000e7 : 12cd0d13;   % 248:  %
+000000e8 : 00100313;   % 249: 	li	t1, 1 %
+000000e9 : 00604a63;   % 252: 	bgtz	t1, gotoWin %
+000000ea : 00034e63;   % 253: 	bltz	t1, gotoLose %
+000000eb : 00001317;   % 254: 	call 	PrintTelaDraw %
+000000ec : 2b8300e7;   % 254:  %
+000000ed : 0180006f;   % 255: 	j	continua %
+000000ee : 00001317;   % 257: 	call 	PrintTelaWin %
+000000ef : 25c300e7;   % 257:  %
+000000f0 : 00c0006f;   % 258: 	j	continua	 %
+000000f1 : 00001317;   % 260: 	call 	PrintTelaLose %
+000000f2 : 2f0300e7;   % 260:  %
+000000f3 : 01900533;   % 262: 	mv	a0, s9 %
+000000f4 : 00000593;   % 263: 	li	a1, 0#128 %
+000000f5 : 00e00613;   % 264: 	li	a2, 14#14 %
+000000f6 : 00001317;   % 265: 	call	PRINT %
+000000f7 : ce4300e7;   % 265:  %
+000000f8 : 07100613;   % 266:   	li 	a2, 113 			# y = 113	 %
+000000f9 : 05800593;   % 267: 	li	a1, 88 				# x = 88		 %
+000000fa : 0fc18517;   % 268: 	la	a0, Image25 			# Yes vermelho		 %
+000000fb : 57c50513;   % 268:  %
+000000fc : 00001317;   % 269: 	call 	PRINT 			 %
+000000fd : ccc300e7;   % 269:  %
+000000fe : 0fc19517;   % 270: 	la 	a0, Image27 			# No vermelho		 %
+000000ff : 1fc50513;   % 270:  %
+00000100 : 0c000593;   % 271:  	li	a1, 192			 %
+00000101 : 00001317;   % 272:   	call	PRINT			 %
+00000102 : cb8300e7;   % 272:  %
+00000103 : 00000b93;   % 273: 	li	s7, 0 %
+00000104 : 00000b13;   % 274: 	li	s6, 0 %
+00000105 : 001b4b13;   % 276: 	xori	s6, s6, 1 %
+00000106 : 020b0463;   % 277: 	beqz	s6, Troca %
+00000107 : 00000593;   % 278: 	li	a1, 0	#128 %
+00000108 : 00e00613;   % 279: 	li	a2, 14	#14 %
+00000109 : 01a00533;   % 280: 	mv	a0, s10 %
+0000010a : 00001317;   % 281: 	call 	PRINT %
+0000010b : c94300e7;   % 281:  %
+0000010c : 09600513;   % 283: 	li	a0, 150 %
+0000010d : 334010ef;   % 284: 	jal 	Sleep %
+0000010e : 01a00533;   % 285: 	mv	a0, s10 %
+0000010f : 0240006f;   % 287: 	j 	FimTroca %
+00000110 : 00000593;   % 288: Troca:	li	a1, 0	#128 %
+00000111 : 00e00613;   % 289: 	li	a2, 14	#14 %
+00000112 : 01900533;   % 290: 	mv	a0, s9 %
+00000113 : 00001317;   % 291: 	call 	PRINT %
+00000114 : c70300e7;   % 291:  %
+00000115 : 09600513;   % 293: 	li	a0, 150 %
+00000116 : 310010ef;   % 294: 	jal 	Sleep %
+00000117 : 01900533;   % 295: 	mv	a0, s9 %
+00000118 : 0fc19597;   % 298: 	la	a1, Image26 %
+00000119 : b4c58593;   % 298:  %
+0000011a : 0fc19617;   % 299: 	la	a2, Image28 %
+0000011b : 7d460613;   % 299:  %
+0000011c : 0fc19717;   % 300: 	la	a4, Image27 %
+0000011d : 18470713;   % 300:  %
+0000011e : 0fc18797;   % 301: 	la	a5, Image25 %
+0000011f : 4ec78793;   % 301:  %
+00000120 : ff200337;   % 302: 	li 	t1, 0xFF200000 			# carrega o endereco de controle do KDMMIO %
+00000121 : 00030313;   % 302:  %
+00000122 : 00032283;   % 303: 	lw 	t0, 0(t1) 			# le bit de Controle Teclado %
+00000123 : 0012f293;   % 304: 	andi 	t0, t0, 0x0001 			# mascara o bit menos significativo %
+00000124 : 04028263;   % 305:    	beq 	t0, zero, FIM_Reset 		# Se nao ha tecla pressionada entao vai para FIM %
+00000125 : 00432383;   % 306:   	lw 	t2, 4(t1) 			# le o valor da tecla teclada %
+00000126 : 00a00293;   % 307: 	li 	t0, '\n' 			# carrega o valor da tecla enter em t0 %
+00000127 : 00729463;   % 308: 	bne 	t0, t2, Char_Esquerda_Reset 	# se t2 nao foi igual a t0 pula para a label %
+00000128 : 0380006f;   % 309: 	j	Exit_Reset 			# pula para a label Exit_Setup %
+00000129 : 06100293;   % 311:    	li 	t0, 'a' 			# carrega o codigo ascii de a no registrador t0 %
+0000012a : 00729a63;   % 312:   	bne 	t0, t2, Char_Direita_Reset 	# verifica se o valor de t0 nao eh igual ao valor em t2 e se nao for pula pra label %
+0000012b : fff00513;   % 313:  	li 	a0, -1 				# carrega em a0 -1 para indicar que esta indo para esquerda %
+0000012c : 00001317;   % 314:   	call	Movimenta_Setup1 		# chama a funcao movimenta para movimentar o navegador %
+0000012d : af0300e7;   % 314:  %
+0000012e : 00a00bb3;   % 315:   	mv 	s7, a0 				# ate aqui a0 ainda eh o resultado de Movimenta_Setup %
+0000012f : 06400293;   % 317: 	li 	t0, 'd' 			# carrega o codigo ascii de d no registrador t0 %
+00000130 : 00729a63;   % 318:   	bne 	t0, t2, FIM_Reset 		# verifica se o valor de t0 nao eh igual ao valor em t2 e se nao for pula pra label %
+00000131 : 00100513;   % 319:  	li 	a0, 1 				# carrega 1 em a0 para indicar que esta indo para direita %
+00000132 : 00001317;   % 320:   	call	Movimenta_Setup1 		# chama a funcao movimenta para movimentar o navegador %
+00000133 : ad8300e7;   % 320:  %
+00000134 : 00a00bb3;   % 321:   	mv 	s7, a0 				# ate aqui a0 ainda eh o resultado de Movimenta_Setup %
+00000135 : f41ff06f;   % 323: 	j 	LOOP3 				# pula para a label LOOP3 %
+00000136 : b20b84e3;   % 325: 	beqz	s7, Setup %
+00000137 : 00a00893;   % 326: 	li	a7, 10 %
+00000138 : 00000073;   % 327: 	ecall	 %
+00000139 : ffc10113;   % 3: 	addi	sp, sp, -4 %
+0000013a : 00112023;   % 4: 	sw	ra, 0(sp) %
+0000013b : 04400293;   % 6: 	li 	t0, 68      	# dimensao do pulo (68x68) %
+0000013c : 0255c333;   % 7: 	div 	t1, a1, t0 	# t1 <- a1 // 68  %
+0000013d : 025642b3;   % 8: 	div 	t0, a2, t0 	# t0 <- a2 // 68 %
+0000013e : 00300393;   % 9: 	li 	t2, 3 %
+0000013f : 027282b3;   % 10: 	mul 	t0, t0, t2 	# t0 <- 3*y %
+00000140 : 006282b3;   % 11: 	add 	t0, t0, t1 	# t0 <- 3*y + x = indice %
+00000141 : 00500cb3;   % 13: 	mv 	s9, t0		# user_char <- indice %
+00000142 : 0fc10317;   % 15: 	la 	t1, BOARD %
+00000143 : af830313;   % 15:  %
+00000144 : 00229293;   % 16: 	slli 	t0, t0, 2 	# t2 <- 4*t0 %
+00000145 : 00530333;   % 17: 	add 	t1, t1, t0 	# t1 <- endereco do board[indice] %
+00000146 : 00200393;   % 18: 	li 	t2, 2 %
+00000147 : 00732023;   % 19: 	sw 	t2, 0(t1)	# board[indice] = 2 %
+00000148 : 00012083;   % 21: 	lw 	ra, 0(sp) %
+00000149 : 00410113;   % 22: 	addi 	sp, sp, 4 %
+0000014a : 00008067;   % 23: 	ret %
+0000014b : ffc10113;   % 10: 	addi 	sp, sp, -4 		# aloca espaco na pilha %
+0000014c : 00112023;   % 11: 	sw 	ra, 0(sp) 		# guarda o ponteiro de retorno %
+0000014d : ff200337;   % 12: 	li 	t1, 0xFF200000 		# carrega o endereco de controle do KDMMIO %
+0000014e : 00030313;   % 12:  %
+0000014f : 00032283;   % 13: 	lw 	t0, 0(t1) 		# Le bit de Controle Teclado %
+00000150 : 0012f293;   % 14: 	andi 	t0, t0, 0x0001 		# mascara o bit menos significativo %
+00000151 : 12028863;   % 15:    	beq 	t0, zero, FIM 		# Se nao ha tecla pressionada entao vai para FIM %
+00000152 : 00600ab3;   % 16:   	mv	s5, t1 %
+00000153 : 0fc10717;   % 17:   	la 	a4, posicao_seletor 	# carrega a posicao do seletor no  tabuleiro %
+00000154 : ad870713;   % 17:  %
+00000155 : 00071583;   % 18: 	lh 	a1, 0(a4) 		# atribui o primeiro valor da posicao em a1 %
+00000156 : 00271603;   % 19: 	lh 	a2, 2(a4) 		# atribui o primeiro valor da posicao em a2 %
+00000157 : fe860293;   % 20: 	addi	t0, a2, -24 %
+00000158 : 04400313;   % 21: 	li	t1, 68 %
+00000159 : 0262c2b3;   % 22: 	div	t0, t0, t1 %
+0000015a : 005003b3;   % 23: 	mv 	t2, t0 %
+0000015b : 00300293;   % 24: 	li	t0, 3 %
+0000015c : 025383b3;   % 25: 	mul	t2, t2, t0 %
+0000015d : 00700733;   % 26:   	mv	a4, t2 %
+0000015e : fc458293;   % 27:   	addi	t0, a1, -60 %
+0000015f : 04400313;   % 28: 	li	t1, 68 %
+00000160 : 0262c2b3;   % 29: 	div	t0, t0, t1 %
+00000161 : 005007b3;   % 30: 	mv	a5, t0 %
+00000162 : 005383b3;   % 31: 	add	t2, t2, t0 %
+00000163 : 00700833;   % 32: 	mv	a6, t2 %
+00000164 : 00239393;   % 33: 	slli	t2, t2, 2 %
+00000165 : 0fc10297;   % 34: 	la	t0, BOARD %
+00000166 : a6c28293;   % 34:  %
+00000167 : 007282b3;   % 35: 	add	t0, t0, t2 %
+00000168 : 0002a283;   % 36:   	lw	t0, 0(t0) %
+00000169 : 01500333;   % 37:   	mv	t1, s5 %
+0000016a : 00500ab3;   % 38:   	mv	s5, t0 			# salva o valor que esta naquela posicao do Board %
+0000016b : 00432383;   % 39:   	lw 	t2, 4(t1) 		# le o valor da tecla tecla  	 %
+0000016c : 00a00293;   % 40: 	li 	t0, '\n' %
+0000016d : 04729863;   % 41: 	bne 	t0, t2, Char_Esquerda 	# verifica se a tecla clicada eh igual a \n %
+0000016e : 0fc10517;   % 42: 	la 	a0, Image2 		# carrega o simbolo O no registrador a0 %
+0000016f : a7450513;   % 42:  %
+00000170 : 000b8663;   % 43: 	beqz 	s7, pula_controle 	# pula para a label pula controle se o simbolo escolhido for diferente de zero %
+00000171 : 0fc11517;   % 44: 	la	a0, Image3 		# carrega o simbolo X no registrador a0 %
+00000172 : c8050513;   % 44:  %
+00000173 : 0a0a9463;   % 46: 	bnez	s5, FIM %
+00000174 : 00001317;   % 47: 	call 	PRINT_animado 		# chama a funcao para printar o simbolo %
+00000175 : b60300e7;   % 47:  %
+00000176 : 0fc12517;   % 48: 	la 	a0, Image5 %
+00000177 : e8450513;   % 48:  %
+00000178 : 00001317;   % 49: 	call 	PRINTSeletor %
+00000179 : dbc300e7;   % 49:  %
+0000017a : efdff0ef;   % 50: 	jal 	bmp_vira_indice 	# posicao no bitmap gera indice no BOARD, cujo conteúdo muda para "2" (0 -> 2)  %
+0000017b : fffd8d93;   % 51: 	addi 	s11, s11, -1 %
+0000017c : 00100c13;   % 52: 	li 	s8, 1 			# peca do usuario eh impressa => vez eh agora do PC %
+0000017d : 00200893;   % 53: 	li 	a7, 2 %
+0000017e : 00000317;   % 54: 	call 	ganhou 			# recebe como argumento o registrador a7, a6,a4 e a5 qual simbolo quero testar a vitoria %
+0000017f : 0e4300e7;   % 54:  %
+00000180 : 0740006f;   % 56: 	j	FIM %
+00000181 : 06100293;   % 58:    	li 	t0, 'a' 		# carrega o codigo ascii de a no registrador t0 %
+00000182 : 00729c63;   % 59:   	bne 	t0, t2, Char_Cima 	# verifica se o valor de t0 nao é igual ao valor em t2 e se nao for pula pra label %
+00000183 : 00000513;   % 60:   	li	a0, 0 %
+00000184 : fbc00593;   % 61:   	li	a1, -68 %
+00000185 : 00001317;   % 62:   	call	Movimenta 		# chama o macro Movimenta %
+00000186 : 8c0300e7;   % 62:  %
+00000187 : 0580006f;   % 63:   	j	FIM %
+00000188 : 07700293;   % 65:  	li 	t0, 'w' 		# carrega o codigo ascii de w no registrador t0 %
+00000189 : 00729c63;   % 66:   	bne 	t0, t2, Char_Direita  	# verifica se o valor de t0 nao é igual ao valor em t2 e se nao for pula pra label %
+0000018a : 00200513;   % 67:   	li	a0, 2 %
+0000018b : fbc00593;   % 68:   	li	a1, -68 %
+0000018c : 00001317;   % 69:   	call	Movimenta 		# chama o macro Movimenta %
+0000018d : 8a4300e7;   % 69:  %
+0000018e : 03c0006f;   % 70:   	j	FIM	 %
+0000018f : 06400293;   % 72: 	li 	t0, 'd' 		# carrega o codigo ascii de d no registrador t0 %
+00000190 : 00729c63;   % 73:   	bne 	t0, t2, Char_Baixo  	# verifica se o valor de t0 nao é igual ao valor em t2 e se nao for pula pra label %
+00000191 : 00000513;   % 74:   	li	a0, 0 %
+00000192 : 04400593;   % 75:   	li	a1, 68 %
+00000193 : 00001317;   % 76:   	call	Movimenta 		# chama o macro Movimenta %
+00000194 : 888300e7;   % 76:  %
+00000195 : 0200006f;   % 77:   	j	FIM %
+00000196 : 07300293;   % 79: 	li 	t0, 's' 		# carrega o codigo ascii de s no registrador t0 %
+00000197 : 00729c63;   % 80: 	bne 	t0, t2, FIM  		# verifica se o valor de t0 nao é igual ao valor em t2 e se nao for pula pra label %
+00000198 : 00200513;   % 81: 	li	a0, 2 %
+00000199 : 04400593;   % 82:   	li	a1, 68 %
+0000019a : 00001317;   % 83: 	call	Movimenta 		# chama o macro Movimenta %
+0000019b : 86c300e7;   % 83:  %
+0000019c : 0040006f;   % 84:   	j	FIM %
+0000019d : 00012083;   % 86: 	lw 	ra, 0(sp) 		# recupera o ponteiro de retorno %
+0000019e : 00410113;   % 87: 	addi 	sp, sp, 4 		# desaloca memoria na pilha %
+0000019f : 005d2293;   % 88: 	slti	t0, s10, 5 %
+000001a0 : 00029463;   % 89: 	bnez	t0, condicao_1 %
+000001a1 : cadff06f;   % 90: 	j	Exit %
+000001a2 : 00008067;   % 92: 	ret 				# retorna para o programa que chamou a funcao	 %
+000001a3 : ffc10113;   % 10: 	addi 	sp, sp, -4 %
+000001a4 : 00112023;   % 11: 	sw 	ra, 0(sp) %
+000001a5 : 0fc10297;   % 13: 	la 	t0, BOARD %
+000001a6 : 96c28293;   % 13:  %
+000001a7 : 00261313;   % 14: 	slli 	t1, a2, 2 %
+000001a8 : 00530333;   % 15: 	add 	t1, t1, t0  %
+000001a9 : 00032303;   % 16: 	lw 	t1, 0(t1)                	# t1 = board[a2] %
+000001aa : 00269393;   % 17: 	slli 	t2, a3, 2  %
+000001ab : 005383b3;   % 18: 	add 	t2, t2, t0  %
+000001ac : 0003a383;   % 19: 	lw 	t2, 0(t2)                	# t2 = board[a3] %
+000001ad : 00e31c63;   % 20: 	bne 	t1, a4, fim_dois_iguais 	# board[a2] = a4? continua:fim %
+000001ae : 00e39a63;   % 21: 	bne 	t2, a4, fim_dois_iguais 	# board[a3] = a4? continua:fim %
+000001af : 00100513;   % 22: 	li 	a0, 1               		# retorna 1 se ambas as casas forem = %
+000001b0 : 00012083;   % 24: 	lw 	ra, 0(sp) %
+000001b1 : 00410113;   % 25: 	addi 	sp, sp, 4 %
+000001b2 : 00008067;   % 26: 	ret %
+000001b3 : 00000513;   % 28: 	li 	a0, 0                    	# retorna 0 se nao %
+000001b4 : 00012083;   % 30: 	lw 	ra, 0(sp) %
+000001b5 : 00410113;   % 31: 	addi 	sp, sp, 4 %
+000001b6 : 00008067;   % 32: 	ret %
+000001b7 : ffc10113;   % 10: 	addi 	sp, sp, -4 		# aloca espaco na pilha %
+000001b8 : 00112023;   % 11: 	sw 	ra, 0(sp) 		# salva o endereco de retorno %
+000001b9 : 00187293;   % 12: 	andi	t0, a6, 1 %
+000001ba : 06029663;   % 13: 	bnez	t0, IMPAR %
+000001bb : 0fc10297;   % 15: 	la	t0, BOARD %
+000001bc : 91428293;   % 15:  %
+000001bd : 00800313;   % 16: 	li	t1, 8 %
+000001be : 00628333;   % 17: 	add	t1, t0, t1 %
+000001bf : 00200393;   % 18: 	li	t2, 2 %
+000001c0 : 00000f93;   % 19: 	li	t6, 0 %
+000001c1 : 0002ae83;   % 21: 	lw	t4, 0(t0) %
+000001c2 : 031e9063;   % 22: 	bne	t4, a7, Fim_D1 %
+000001c3 : 01028293;   % 23: 	addi	t0, t0, 16 %
+000001c4 : 001f8f93;   % 24: 	addi	t6, t6, 1 %
+000001c5 : fff38393;   % 25: 	addi	t2, t2, -1 %
+000001c6 : 0003ae13;   % 26: 	slti	t3, t2, 0 %
+000001c7 : fe0e04e3;   % 27: 	beqz	t3, Loop_ganha_D1 %
+000001c8 : 00300393;   % 28: 	li	t2, 3 %
+000001c9 : a87f80e3;   % 29: 	beq	t6, t2, Aumenta_Score %
+000001ca : 00000f93;   % 31: 	li	t6, 0 %
+000001cb : 00200393;   % 32: 	li	t2, 2 %
+000001cc : 00032e83;   % 34: 	lw	t4, 0(t1) %
+000001cd : 031e9063;   % 35: 	bne	t4, a7, IMPAR %
+000001ce : 00830313;   % 36: 	addi	t1, t1, 8 %
+000001cf : 001f8f93;   % 37: 	addi	t6, t6, 1 %
+000001d0 : fff38393;   % 38: 	addi	t2, t2, -1 %
+000001d1 : 0003ae13;   % 39: 	slti	t3, t2, 0 %
+000001d2 : fe0e04e3;   % 40: 	beqz	t3, Loop_ganha_D2 %
+000001d3 : 00300393;   % 41: 	li	t2, 3 %
+000001d4 : a47f8ae3;   % 42: 	beq	t6, t2, Aumenta_Score %
+000001d5 : 0fc10297;   % 44: 	la	t0, BOARD %
+000001d6 : 8ac28293;   % 44:  %
+000001d7 : 00271713;   % 45: 	slli	a4, a4, 2 %
+000001d8 : 00e28333;   % 46: 	add	t1, t0, a4 %
+000001d9 : 00000f93;   % 47: 	li	t6, 0 %
+000001da : 00200393;   % 48: 	li	t2, 2 %
+000001db : 00032e83;   % 50: 	lw	t4, 0(t1) %
+000001dc : 031e9063;   % 51: 	bne	t4, a7, Fim_Impar %
+000001dd : 001f8f93;   % 52: 	addi	t6, t6, 1 %
+000001de : 00430313;   % 53: 	addi	t1, t1, 4 %
+000001df : fff38393;   % 54: 	addi	t2, t2, -1 %
+000001e0 : 0003ae13;   % 55: 	slti	t3, t2, 0 %
+000001e1 : fe0e04e3;   % 56: 	beqz	t3, Loop_ganha_L %
+000001e2 : 00300393;   % 57: 	li	t2, 3 %
+000001e3 : a07f8ce3;   % 58: 	beq	t6, t2, Aumenta_Score %
+000001e4 : 00279793;   % 60: 	slli	a5, a5, 2 %
+000001e5 : 00f28333;   % 61: 	add	t1, t0, a5 %
+000001e6 : 00200393;   % 62: 	li	t2, 2 %
+000001e7 : 00000f93;   % 63: 	li	t6, 0 %
+000001e8 : 00032e83;   % 65: 	lw	t4, 0(t1) %
+000001e9 : 031e9063;   % 66: 	bne	t4, a7, Fim_ganha %
+000001ea : 001f8f93;   % 67: 	addi	t6, t6, 1 %
+000001eb : 00c30313;   % 68: 	addi	t1, t1, 12 %
+000001ec : fff38393;   % 69: 	addi	t2, t2, -1 %
+000001ed : 0003ae13;   % 70: 	slti	t3, t2, 0 %
+000001ee : fe0e04e3;   % 71: 	beqz	t3, Loop_ganha_C %
+000001ef : 00300393;   % 72: 	li	t2, 3 %
+000001f0 : 9e7f82e3;   % 73: 	beq	t6, t2, Aumenta_Score %
+000001f1 : 00012083;   % 75: 	lw 	ra, 0(sp) 		# recupera o valor do ponteiro de retorno %
+000001f2 : 00410113;   % 76: 	addi 	sp, sp, 4 		# desoloca memoria na pilha %
+000001f3 : 00008067;   % 77: 	ret %
+000001f4 : ffc10113;   % 3: 	addi 	sp, sp, -4 %
+000001f5 : 00112023;   % 4: 	sw 	ra, 0(sp) %
+000001f6 : c0102573;   % 6: 	csrr 	a0, time			#  Le time LOW %
+000001f7 : 00900293;   % 11: 	li 	t0, 9  %
+000001f8 : 025565b3;   % 12: 	rem 	a1, a0, t0           	# a0 mod 9 implica 0 <= a1 <= 8 %
+000001f9 : 799000ef;   % 13: 	jal 	vazia  %
+000001fa : fe0508e3;   % 14: 	beqz 	a0, loop_facil 	# se a casa estiver ocupada, tenta de novo %
+000001fb : 30d000ef;   % 16: 	jal 	PRINT_PC %
+000001fc : 00012083;   % 18: 	lw 	ra, 0(sp) %
+000001fd : 00410113;   % 19: 	addi 	sp, sp, 4 %
+000001fe : 00008067;   % 20: 	ret %
+000001ff : ffc10113;   % 4: 	addi 	sp, sp, -4 %
+00000200 : 00112023;   % 5: 	sw 	ra, 0(sp)	 %
+00000201 : 00000593;   % 6: 	li 	a1, 0               	# inicia o loop na posicao 0 %
+00000202 : 775000ef;   % 8: 	jal 	vazia %
+00000203 : 02051063;   % 9: 	bnez 	a0, fim_for_media 	# casa desocupada => sai do for %
+00000204 : 00800293;   % 10: 	li 	t0, 8 %
+00000205 : 00b2c663;   % 11: 	blt 	t0, a1, fim_media   	# checagem de seguranca index<=8 %
+00000206 : 00158593;   % 12: 	addi 	a1, a1, 1          	# posicao++ %
+00000207 : fedff06f;   % 13: 	j 	for_media             	# continua o loop %
+00000208 : 00012083;   % 15: 	lw 	ra, 0(sp) %
+00000209 : 00410113;   % 16: 	addi 	sp, sp, 4 %
+0000020a : 00008067;   % 17: 	ret %
+0000020b : 2cd000ef;   % 19: 	jal 	PRINT_PC 		# retorno da funcao com marca no tabuleiro %
+0000020c : 00012083;   % 21: 	lw 	ra, 0(sp) %
+0000020d : 00410113;   % 22: 	addi 	sp, sp, 4 %
+0000020e : 00008067;   % 23: 	ret %
+0000020f : ffc10113;   % 4: 	addi 	sp, sp, -4 %
+00000210 : 00112023;   % 5: 	sw 	ra, 0(sp) %
+00000211 : 200000ef;   % 7: 	jal 	ganhar              	# alinha 3 pc_char %
+00000212 : 02041463;   % 8: 	bnez 	s0, fim_do_dificil 	# available = 1 => return %
+00000213 : 1dc000ef;   % 10: 	jal 	bloquear            	# bloqueia 3 user_char %
+00000214 : 02041063;   % 11: 	bnez 	s0, fim_do_dificil 	# available = 1 => return %
+00000215 : 1b0000ef;   % 13: 	jal 	centro              	# joga no centro %
+00000216 : 00041c63;   % 14: 	bnez 	s0, fim_do_dificil 	# available = 1 => return	 %
+00000217 : 114000ef;   % 16: 	jal 	canto_oposto        	# joga em canto oposto %
+00000218 : 00041863;   % 17: 	bnez 	s0, fim_do_dificil 	# available = 1 => return %
+00000219 : 094000ef;   % 19: 	jal 	canto_vazio         	# joga em canto vazio %
+0000021a : 00041463;   % 20: 	bnez 	s0, fim_do_dificil 	# available = 1 => return %
+0000021b : 014000ef;   % 22: 	jal 	lado_vazio          	# joga em lado vazio %
+0000021c : 00000433;   % 25: 	mv 	s0, x0 			# available=0 %
+0000021d : 00012083;   % 26: 	lw 	ra, 0(sp) %
+0000021e : 00410113;   % 27: 	addi 	sp, sp, 4 %
+0000021f : 00008067;   % 28: 	ret %
+00000220 : ffc10113;   % 33: 	addi 	sp, sp, -4 %
+00000221 : 00112023;   % 34: 	sw 	ra, 0(sp) %
+00000222 : 00100593;   % 36: 	li 	a1, 1  %
+00000223 : 6f1000ef;   % 37: 	jal 	vazia  %
+00000224 : 00050a63;   % 38: 	beqz 	a0, lado_4 		# lado 2 vazio? proximo lado : marca %
+00000225 : 265000ef;   % 39: 	jal 	PRINT_PC 		# marca a casa a1 e poe available=1 %
+00000226 : 00012083;   % 41: 	lw 	ra, 0(sp) %
+00000227 : 00410113;   % 42: 	addi 	sp, sp, 4 %
+00000228 : 00008067;   % 43: 	ret	 %
+00000229 : 00300593;   % 44: lado_4:	li 	a1, 3  %
+0000022a : 6d5000ef;   % 45: 	jal 	vazia  %
+0000022b : 00050a63;   % 46: 	beqz 	a0, lado_6 		# lado 4 vazio? proximo lado : marca %
+0000022c : 249000ef;   % 47: 	jal 	PRINT_PC 		# marca a casa a1 e poe available=1 %
+0000022d : 00012083;   % 49: 	lw 	ra, 0(sp) %
+0000022e : 00410113;   % 50: 	addi 	sp, sp, 4 %
+0000022f : 00008067;   % 51: 	ret	 %
+00000230 : 00500593;   % 52: lado_6:	li 	a1, 5  %
+00000231 : 6b9000ef;   % 53: 	jal 	vazia  %
+00000232 : 00050a63;   % 54: 	beqz 	a0, lado_8 		# lado 6 vazio? proximo lado : marca %
+00000233 : 22d000ef;   % 55: 	jal 	PRINT_PC 		# marca a casa a1 e poe available=1 %
+00000234 : 00012083;   % 57: 	lw 	ra, 0(sp) %
+00000235 : 00410113;   % 58: 	addi 	sp, sp, 4 %
+00000236 : 00008067;   % 59: 	ret	 %
+00000237 : 00700593;   % 60: lado_8:	li 	a1, 7  %
+00000238 : 69d000ef;   % 61: 	jal 	vazia  %
+00000239 : 00050463;   % 62: 	beqz 	a0, fim_do_lado_vazio 	# lado 8 vazio? marca : fim %
+0000023a : 211000ef;   % 63: 	jal 	PRINT_PC 		# marca a casa a1 e poe available=1 %
+0000023b : 00012083;   % 66: 	lw 	ra, 0(sp) %
+0000023c : 00410113;   % 67: 	addi 	sp, sp, 4 %
+0000023d : 00008067;   % 68: 	ret %
+0000023e : ffc10113;   % 73: 	addi 	sp, sp, -4 %
+0000023f : 00112023;   % 74: 	sw 	ra, 0(sp) %
+00000240 : 00000593;   % 76: 	li 	a1, 0  %
+00000241 : 679000ef;   % 77: 	jal 	vazia  %
+00000242 : 00050a63;   % 78: 	beqz 	a0, canto_3 		# canto 1 vazio? proximo lado : marca %
+00000243 : 1ed000ef;   % 79: 	jal 	PRINT_PC 		# marca a casa a1 e poe available=1 %
+00000244 : 00012083;   % 81: 	lw 	ra, 0(sp) %
+00000245 : 00410113;   % 82: 	addi 	sp, sp, 4 %
+00000246 : 00008067;   % 83: 	ret	 %
+00000247 : 00200593;   % 85: 	li 	a1, 2  %
+00000248 : 65d000ef;   % 86: 	jal 	vazia  %
+00000249 : 00050a63;   % 87: 	beqz 	a0, canto_7 		# canto 3 vazio? proximo lado : marca %
+0000024a : 1d1000ef;   % 88: 	jal 	PRINT_PC 		# marca a casa a1 e poe available=1 %
+0000024b : 00012083;   % 90: 	lw 	ra, 0(sp) %
+0000024c : 00410113;   % 91: 	addi 	sp, sp, 4 %
+0000024d : 00008067;   % 92: 	ret	 %
+0000024e : 00600593;   % 94: 	li 	a1, 6  %
+0000024f : 641000ef;   % 95: 	jal 	vazia  %
+00000250 : 00050a63;   % 96: 	beqz 	a0, canto_9 		# canto 7 vazio? proximo lado : marca %
+00000251 : 1b5000ef;   % 97: 	jal 	PRINT_PC 		# marca a casa a1 e poe available=1 %
+00000252 : 00012083;   % 99: 	lw 	ra, 0(sp) %
+00000253 : 00410113;   % 100: 	addi 	sp, sp, 4 %
+00000254 : 00008067;   % 101: 	ret	 %
+00000255 : 00800593;   % 103: 	li 	a1, 8  %
+00000256 : 625000ef;   % 104: 	jal 	vazia  %
+00000257 : 00050463;   % 105: 	beqz 	a0, fim_do_canto_vazio 	# canto 9 vazio? marca : fim %
+00000258 : 199000ef;   % 106: 	jal 	PRINT_PC 		# marca a casa a1 e poe available=1 %
+00000259 : 00012083;   % 109: 	lw 	ra, 0(sp) %
+0000025a : 00410113;   % 110: 	addi 	sp, sp, 4 %
+0000025b : 00008067;   % 111: 	ret %
+0000025c : ffc10113;   % 117: 	addi	sp, sp, -4 %
+0000025d : 00112023;   % 118: 	sw	ra, 0(sp) %
+0000025e : 020c9063;   % 120: 	bnez 	s9, oposto_3 		# user square = 1? continua : proximo canto %
+0000025f : 00800593;   % 121: 	li 	a1, 8 %
+00000260 : 5fd000ef;   % 122: 	jal 	vazia %
+00000261 : 00050a63;   % 123: 	beqz 	a0, oposto_3 		# casa 9 vazia? marca : proximo canto %
+00000262 : 171000ef;   % 124: 	jal 	PRINT_PC %
+00000263 : 00012083;   % 126: 	lw 	ra, 0(sp) %
+00000264 : 00410113;   % 127: 	addi 	sp, sp, 4 %
+00000265 : 00008067;   % 128: 	ret %
+00000266 : 00200293;   % 130: 	li 	t0, 2  %
+00000267 : 025c9063;   % 131: 	bne 	s9, t0, oposto_7 	# user square = 3? continua:proximo canto %
+00000268 : 00600593;   % 132: 	li 	a1, 6 %
+00000269 : 5d9000ef;   % 133: 	jal 	vazia %
+0000026a : 00050a63;   % 134: 	beqz 	a0, oposto_7 		# casa 7 vazia? marca:proximo canto %
+0000026b : 14d000ef;   % 135: 	jal 	PRINT_PC %
+0000026c : 00012083;   % 137: 	lw 	ra, 0(sp) %
+0000026d : 00410113;   % 138: 	addi 	sp, sp, 4 %
+0000026e : 00008067;   % 139: 	ret %
+0000026f : 00600293;   % 141: 	li 	t0, 6  %
+00000270 : 025c9063;   % 142: 	bne 	s9, t0, oposto_9 	# user square = 7? continua:proximo canto %
+00000271 : 00200593;   % 143: 	li 	a1, 2 %
+00000272 : 5b5000ef;   % 144: 	jal 	vazia %
+00000273 : 00050a63;   % 145: 	beqz 	a0, oposto_9 		# casa 3 vazia? marca:proximo canto %
+00000274 : 129000ef;   % 146: 	jal 	PRINT_PC %
+00000275 : 00012083;   % 148: 	lw ra, 0(sp) %
+00000276 : 00410113;   % 149: 	addi sp, sp, 4 %
+00000277 : 00008067;   % 150: 	ret %
+00000278 : 00800293;   % 152: 	li 	t0, 8  %
+00000279 : 005c9a63;   % 153: 	bne 	s9, t0, fim_do_oposto 	# user square = 9? continua:proximo canto %
+0000027a : 00000593;   % 154: 	li 	a1, 0 %
+0000027b : 591000ef;   % 155: 	jal 	vazia %
+0000027c : 00050463;   % 156: 	beqz 	a0, fim_do_oposto 	# casa 1 vazia? marca:fim %
+0000027d : 105000ef;   % 157: 	jal 	PRINT_PC %
+0000027e : 00012083;   % 160: 	lw 	ra, 0(sp) %
+0000027f : 00410113;   % 161: 	addi 	sp, sp, 4 %
+00000280 : 00008067;   % 162: 	ret  %
+00000281 : ffc10113;   % 167: 	addi 	sp, sp, -4 %
+00000282 : 00112023;   % 168: 	sw 	ra, 0(sp) %
+00000283 : 00400593;   % 170: 	li 	a1, 4 %
+00000284 : 56d000ef;   % 171: 	jal 	vazia %
+00000285 : 00050463;   % 172: 	beqz 	a0, fim_do_centro	 %
+00000286 : 0e1000ef;   % 173: 	jal 	PRINT_PC %
+00000287 : 00012083;   % 176: 	lw 	ra, 0(sp) %
+00000288 : 00410113;   % 177: 	addi 	sp, sp, 4 %
+00000289 : 00008067;   % 178: 	ret %
+0000028a : ffc10113;   % 184: 	addi 	sp, sp, -4 %
+0000028b : 00112023;   % 185: 	sw 	ra, 0(sp) %
+0000028c : 00200713;   % 187: 	li 	a4, 2 			# 1 no board => PC, 2 no board => USER %
+0000028d : 02c000ef;   % 188: 	jal 	ganhar_ou_bloquear %
+0000028e : 00012083;   % 190: 	lw 	ra, 0(sp) %
+0000028f : 00410113;   % 191: 	addi 	sp, sp, 4 %
+00000290 : 00008067;   % 192: 	ret %
+00000291 : ffc10113;   % 198: 	addi 	sp, sp, -4 %
+00000292 : 00112023;   % 199: 	sw 	ra, 0(sp) %
+00000293 : 00100713;   % 201: 	li 	a4, 1 			# 1 no board => PC, 2 no board => USER %
+00000294 : 010000ef;   % 202: 	jal 	ganhar_ou_bloquear %
+00000295 : 00012083;   % 204: 	lw 	ra, 0(sp) %
+00000296 : 00410113;   % 205: 	addi 	sp, sp, 4 %
+00000297 : 00008067;   % 206: 	ret %
+00000298 : ffc10113;   % 213: 	addi 	sp, sp, -4 %
+00000299 : 00112023;   % 214: 	sw 	ra, 0(sp) %
+0000029a : 00000613;   % 216: 	li 	a2, 0 %
+0000029b : 00100693;   % 217: 	li 	a3, 1 %
+0000029c : c1dff0ef;   % 218: 	jal 	dois_iguais %
+0000029d : 02050063;   % 219: 	beqz 	a0, linha_23 		# dois iguais ? continua:proxima "adjacencia" %
+0000029e : 00200593;   % 220: 	li 	a1, 2 			# a1 vira indice 2 para a funcao vazia %
+0000029f : 501000ef;   % 221: 	jal 	vazia 			# verifica se a casa 3 esta livre %
+000002a0 : 00050a63;   % 222: 	beqz 	a0, linha_23 		# livre? marca : proxima "adjacencia" %
+000002a1 : 075000ef;   % 223: 	jal 	PRINT_PC %
+000002a2 : 00012083;   % 225: 	lw 	ra, 0(sp) %
+000002a3 : 00410113;   % 226: 	addi 	sp, sp, 4 %
+000002a4 : 00008067;   % 227: 	ret %
+000002a5 : 00100613;   % 230: 	li 	a2, 1 %
+000002a6 : 00200693;   % 231: 	li 	a3, 2 %
+000002a7 : bf1ff0ef;   % 232: 	jal 	dois_iguais %
+000002a8 : 02050063;   % 233: 	beqz 	a0, linha_13 		# dois iguais ? continua:proxima "adjacencia" %
+000002a9 : 00000593;   % 234: 	li 	a1, 0 			# a1 vira indice 0 para a funcao vazia %
+000002aa : 4d5000ef;   % 235: 	jal 	vazia 			# verifica se a casa 1 esta livre %
+000002ab : 00050a63;   % 236: 	beqz 	a0, linha_13 		# livre ? marca : proxima "adjacencia" %
+000002ac : 049000ef;   % 237: 	jal 	PRINT_PC %
+000002ad : 00012083;   % 239: 	lw 	ra, 0(sp) %
+000002ae : 00410113;   % 240: 	addi 	sp, sp, 4 %
+000002af : 00008067;   % 241: 	ret %
+000002b0 : 00000613;   % 244: 	li 	a2, 0 %
+000002b1 : 00200693;   % 245: 	li 	a3, 2 %
+000002b2 : bc5ff0ef;   % 246: 	jal 	dois_iguais %
+000002b3 : 02050063;   % 247: 	beqz 	a0, linha_45 		# dois iguais ? continua:proxima "adjacencia" %
+000002b4 : 00100593;   % 248: 	li 	a1, 1 			# a1 vira indice 1 para a funcao vazia %
+000002b5 : 4a9000ef;   % 249: 	jal 	vazia 			# verifica se a casa 2 esta livre %
+000002b6 : 00050a63;   % 250: 	beqz 	a0, linha_45 		# livre ? marca : proxima "adjacencia"	 %
+000002b7 : 01d000ef;   % 251: 	jal 	PRINT_PC %
+000002b8 : 00012083;   % 253: 	lw 	ra, 0(sp) %
+000002b9 : 00410113;   % 254: 	addi	sp, sp, 4 %
+000002ba : 00008067;   % 255: 	ret %
+000002bb : 00300613;   % 258: 	li 	a2, 3 %
+000002bc : 00400693;   % 259: 	li 	a3, 4 %
+000002bd : b99ff0ef;   % 260: 	jal 	dois_iguais %
+000002be : 02050063;   % 261: 	beqz 	a0, linha_56 		# dois iguais ? continua:proxima "adjacencia" %
+000002bf : 00500593;   % 262: 	li 	a1, 5 			# a1 vira indice 5 para a funcao vazia %
+000002c0 : 47d000ef;   % 263: 	jal 	vazia 			# verifica se a casa 6 esta livre %
+000002c1 : 00050a63;   % 264: 	beqz 	a0, linha_56 		# livre ? marca : proxima "adjacencia"	 %
+000002c2 : 7f0000ef;   % 265: 	jal 	PRINT_PC %
+000002c3 : 00012083;   % 267: 	lw 	ra, 0(sp) %
+000002c4 : 00410113;   % 268: 	addi 	sp, sp, 4 %
+000002c5 : 00008067;   % 269: 	ret	 %
+000002c6 : 00400613;   % 272: 	li 	a2, 4 %
+000002c7 : 00500693;   % 273: 	li 	a3, 5 %
+000002c8 : b6dff0ef;   % 274: 	jal 	dois_iguais %
+000002c9 : 02050063;   % 275: 	beqz 	a0, linha_46 		# dois iguais ? continua:proxima "adjacencia" %
+000002ca : 00300593;   % 276: 	li 	a1, 3 			# a1 vira indice 5 para a funcao vazia %
+000002cb : 451000ef;   % 277: 	jal 	vazia 			# verifica se a casa 4 esta livre %
+000002cc : 00050a63;   % 278: 	beqz 	a0, linha_46 		# livre ? marca : proxima "adjacencia"	 %
+000002cd : 7c4000ef;   % 279: 	jal 	PRINT_PC %
+000002ce : 00012083;   % 281: 	lw 	ra, 0(sp) %
+000002cf : 00410113;   % 282: 	addi 	sp, sp, 4 %
+000002d0 : 00008067;   % 283: 	ret %
+000002d1 : 00300613;   % 286: 	li 	a2, 3 %
+000002d2 : 00500693;   % 287: 	li 	a3, 5 %
+000002d3 : b41ff0ef;   % 288: 	jal 	dois_iguais %
+000002d4 : 02050063;   % 289: 	beqz 	a0, linha_78 		# dois iguais ? continua:proxima "adjacencia" %
+000002d5 : 00400593;   % 290: 	li 	a1, 4 			# a1 vira indice 5 para a funcao vazia %
+000002d6 : 425000ef;   % 291: 	jal 	vazia 			# verifica se a casa 6 esta livre %
+000002d7 : 00050a63;   % 292: 	beqz 	a0, linha_78 		# livre ? marca : proxima "adjacencia"	 %
+000002d8 : 798000ef;   % 293: 	jal 	PRINT_PC %
+000002d9 : 00012083;   % 295: 	lw 	ra, 0(sp) %
+000002da : 00410113;   % 296: 	addi 	sp, sp, 4 %
+000002db : 00008067;   % 297: 	ret %
+000002dc : 00600613;   % 300: 	li 	a2, 6 %
+000002dd : 00700693;   % 301: 	li 	a3, 7 %
+000002de : b15ff0ef;   % 302: 	jal 	dois_iguais %
+000002df : 02050063;   % 303: 	beqz 	a0, linha_89 		# dois iguais ? continua:proxima "adjacencia" %
+000002e0 : 00800593;   % 304: 	li 	a1, 8 			# a1 vira indice 8 para a funcao vazia %
+000002e1 : 3f9000ef;   % 305: 	jal 	vazia 			# verifica se a casa 9 esta livre %
+000002e2 : 00050a63;   % 306: 	beqz 	a0, linha_89 		# livre ? marca : proxima "adjacencia"	 %
+000002e3 : 76c000ef;   % 307: 	jal 	PRINT_PC %
+000002e4 : 00012083;   % 309: 	lw 	ra, 0(sp) %
+000002e5 : 00410113;   % 310: 	addi 	sp, sp, 4 %
+000002e6 : 00008067;   % 311: 	ret %
+000002e7 : 00700613;   % 314: 	li 	a2, 7 %
+000002e8 : 00800693;   % 315: 	li 	a3, 8 %
+000002e9 : ae9ff0ef;   % 316: 	jal 	dois_iguais %
+000002ea : 02050063;   % 317: 	beqz 	a0, linha_79 		# dois iguais ? continua:proxima "adjacencia" %
+000002eb : 00600593;   % 318: 	li 	a1, 6 			# a1 vira indice 6 para a funcao vazia %
+000002ec : 3cd000ef;   % 319: 	jal 	vazia 			# verifica se a casa 7 esta livre %
+000002ed : 00050a63;   % 320: 	beqz 	a0, linha_79 		# livre ? marca : proxima "adjacencia"	 %
+000002ee : 740000ef;   % 321: 	jal 	PRINT_PC %
+000002ef : 00012083;   % 323: 	lw 	ra, 0(sp) %
+000002f0 : 00410113;   % 324: 	addi 	sp, sp, 4 %
+000002f1 : 00008067;   % 325: 	ret %
+000002f2 : 00600613;   % 328: 	li 	a2, 6 %
+000002f3 : 00800693;   % 329: 	li 	a3, 8 %
+000002f4 : abdff0ef;   % 330: 	jal 	dois_iguais %
+000002f5 : 02050063;   % 331: 	beqz 	a0, col_14 		# dois iguais ? continua:proxima "adjacencia" %
+000002f6 : 00700593;   % 332: 	li 	a1, 7 			# a1 vira indice 7 para a funcao vazia %
+000002f7 : 3a1000ef;   % 333: 	jal 	vazia 			# verifica se a casa 8 esta livre %
+000002f8 : 00050a63;   % 334: 	beqz 	a0, col_14 		# livre ? marca : proxima "adjacencia"	 %
+000002f9 : 714000ef;   % 335: 	jal 	PRINT_PC %
+000002fa : 00012083;   % 337: 	lw 	ra, 0(sp) %
+000002fb : 00410113;   % 338: 	addi 	sp, sp, 4 %
+000002fc : 00008067;   % 339: 	ret	 %
+000002fd : 00000613;   % 342: 	li 	a2, 0 %
+000002fe : 00300693;   % 343: 	li 	a3, 3 %
+000002ff : a91ff0ef;   % 344: 	jal 	dois_iguais %
+00000300 : 02050063;   % 345: 	beqz 	a0, col_47 		# dois iguais ? continua:proxima "adjacencia" %
+00000301 : 00600593;   % 346: 	li 	a1, 6 			# a1 vira indice 6 para a funcao vazia %
+00000302 : 375000ef;   % 347: 	jal 	vazia 			# verifica se a casa 7 esta livre %
+00000303 : 00050a63;   % 348: 	beqz 	a0, col_47 		# livre ? marca : proxima "adjacencia"	 %
+00000304 : 6e8000ef;   % 349: 	jal 	PRINT_PC %
+00000305 : 00012083;   % 351: 	lw 	ra, 0(sp) %
+00000306 : 00410113;   % 352: 	addi 	sp, sp, 4 %
+00000307 : 00008067;   % 353: 	ret %
+00000308 : 00300613;   % 356: 	li 	a2, 3 %
+00000309 : 00600693;   % 357: 	li 	a3, 6 %
+0000030a : a65ff0ef;   % 358: 	jal 	dois_iguais %
+0000030b : 02050063;   % 359: 	beqz 	a0, col_17 		# dois iguais ? continua:proxima "adjacencia" %
+0000030c : 00000593;   % 360: 	li 	a1, 0 			# a1 vira indice 0 para a funcao vazia %
+0000030d : 349000ef;   % 361: 	jal 	vazia 			# verifica se a casa 1 esta livre %
+0000030e : 00050a63;   % 362: 	beqz 	a0, col_17 		# livre ? marca : proxima "adjacencia"	 %
+0000030f : 6bc000ef;   % 363: 	jal 	PRINT_PC %
+00000310 : 00012083;   % 365: 	lw 	ra, 0(sp) %
+00000311 : 00410113;   % 366: 	addi 	sp, sp, 4 %
+00000312 : 00008067;   % 367: 	ret	 %
+00000313 : 00000613;   % 370: 	li 	a2, 0 %
+00000314 : 00600693;   % 371: 	li 	a3, 6 %
+00000315 : a39ff0ef;   % 372: 	jal 	dois_iguais %
+00000316 : 02050063;   % 373: 	beqz 	a0, col_25 		# dois iguais ? continua:proxima "adjacencia" %
+00000317 : 00300593;   % 374: 	li 	a1, 3 			# a1 vira indice 3 para a funcao vazia %
+00000318 : 31d000ef;   % 375: 	jal 	vazia 			# verifica se a casa 4 esta livre %
+00000319 : 00050a63;   % 376: 	beqz 	a0, col_25 		# livre ? marca : proxima "adjacencia"	 %
+0000031a : 690000ef;   % 377: 	jal 	PRINT_PC %
+0000031b : 00012083;   % 379: 	lw 	ra, 0(sp) %
+0000031c : 00410113;   % 380: 	addi 	sp, sp, 4 %
+0000031d : 00008067;   % 381: 	ret %
+0000031e : 00100613;   % 384: 	li 	a2, 1 %
+0000031f : 00400693;   % 385: 	li 	a3, 4 %
+00000320 : a0dff0ef;   % 386: 	jal 	dois_iguais %
+00000321 : 02050063;   % 387: 	beqz 	a0, col_58 		# dois iguais ? continua:proxima "adjacencia" %
+00000322 : 00700593;   % 388: 	li 	a1, 7 			# a1 vira indice 7 para a funcao vazia %
+00000323 : 2f1000ef;   % 389: 	jal 	vazia 			# verifica se a casa 8 esta livre %
+00000324 : 00050a63;   % 390: 	beqz 	a0, col_58 		# livre ? marca : proxima "adjacencia"	 %
+00000325 : 664000ef;   % 391: 	jal 	PRINT_PC %
+00000326 : 00012083;   % 393: 	lw 	ra, 0(sp) %
+00000327 : 00410113;   % 394: 	addi 	sp, sp, 4 %
+00000328 : 00008067;   % 395: 	ret	 %
+00000329 : 00400613;   % 398: 	li 	a2, 4 %
+0000032a : 00700693;   % 399: 	li 	a3, 7 %
+0000032b : 9e1ff0ef;   % 400: 	jal 	dois_iguais %
+0000032c : 02050063;   % 401: 	beqz 	a0, col_28 		# dois iguais ? continua:proxima "adjacencia" %
+0000032d : 00100593;   % 402: 	li 	a1, 1 			# a1 vira indice 1 para a funcao vazia %
+0000032e : 2c5000ef;   % 403: 	jal 	vazia 			# verifica se a casa 2 esta livre %
+0000032f : 00050a63;   % 404: 	beqz 	a0, col_28 		# livre ? marca : proxima "adjacencia"	 %
+00000330 : 638000ef;   % 405: 	jal 	PRINT_PC %
+00000331 : 00012083;   % 407: 	lw 	ra, 0(sp) %
+00000332 : 00410113;   % 408: 	addi 	sp, sp, 4 %
+00000333 : 00008067;   % 409: 	ret	 %
+00000334 : 00100613;   % 412: 	li 	a2, 1 %
+00000335 : 00700693;   % 413: 	li 	a3, 7 %
+00000336 : 9b5ff0ef;   % 414: 	jal 	dois_iguais %
+00000337 : 02050063;   % 415: 	beqz 	a0, col_36 		# dois iguais ? continua:proxima "adjacencia" %
+00000338 : 00400593;   % 416: 	li 	a1, 4 			# a1 vira indice 4 para a funcao vazia %
+00000339 : 299000ef;   % 417: 	jal 	vazia 			# verifica se a casa 5 esta livre %
+0000033a : 00050a63;   % 418: 	beqz 	a0, col_36 		# livre ? marca : proxima "adjacencia"	 %
+0000033b : 60c000ef;   % 419: 	jal 	PRINT_PC %
+0000033c : 00012083;   % 421: 	lw 	ra, 0(sp) %
+0000033d : 00410113;   % 422: 	addi 	sp, sp, 4 %
+0000033e : 00008067;   % 423: 	ret %
+0000033f : 00200613;   % 426: 	li 	a2, 2 %
+00000340 : 00500693;   % 427: 	li 	a3, 5 %
+00000341 : 989ff0ef;   % 428: 	jal 	dois_iguais %
+00000342 : 02050063;   % 429: 	beqz 	a0, col_69 		# dois iguais ? continua:proxima "adjacencia" %
+00000343 : 00800593;   % 430: 	li 	a1, 8 			# a1 vira indice 8 para a funcao vazia %
+00000344 : 26d000ef;   % 431: 	jal 	vazia 			# verifica se a casa 9 esta livre %
+00000345 : 00050a63;   % 432: 	beqz 	a0, col_69 		# livre ? marca : proxima "adjacencia"	 %
+00000346 : 5e0000ef;   % 433: 	jal 	PRINT_PC %
+00000347 : 00012083;   % 435: 	lw 	ra, 0(sp) %
+00000348 : 00410113;   % 436: 	addi 	sp, sp, 4 %
+00000349 : 00008067;   % 437: 	ret %
+0000034a : 00500613;   % 440: 	li 	a2, 5 %
+0000034b : 00800693;   % 441: 	li 	a3, 8 %
+0000034c : 95dff0ef;   % 442: 	jal 	dois_iguais %
+0000034d : 02050063;   % 443: 	beqz 	a0, col_39 		# dois iguais ? continua:proxima "adjacencia" %
+0000034e : 00200593;   % 444: 	li 	a1, 2 			# a1 vira indice 2 para a funcao vazia %
+0000034f : 241000ef;   % 445: 	jal 	vazia 			# verifica se a casa 3 esta livre %
+00000350 : 00050a63;   % 446: 	beqz 	a0, col_39 		# livre ? marca : proxima "adjacencia"	 %
+00000351 : 5b4000ef;   % 447: 	jal 	PRINT_PC %
+00000352 : 00012083;   % 449: 	lw 	ra, 0(sp) %
+00000353 : 00410113;   % 450: 	addi 	sp, sp, 4 %
+00000354 : 00008067;   % 451: 	ret	 %
+00000355 : 00200613;   % 454: 	li 	a2, 2 %
+00000356 : 00800693;   % 455: 	li 	a3, 8 %
+00000357 : 931ff0ef;   % 456: 	jal 	dois_iguais %
+00000358 : 02050063;   % 457: 	beqz 	a0, diag_15 		# dois iguais ? continua:proxima "adjacencia" %
+00000359 : 00500593;   % 458: 	li 	a1, 5 			# a1 vira indice 5 para a funcao vazia %
+0000035a : 215000ef;   % 459: 	jal 	vazia 			# verifica se a casa 6 esta livre %
+0000035b : 00050a63;   % 460: 	beqz 	a0, diag_15 		# livre ? marca : proxima "adjacencia"	 %
+0000035c : 588000ef;   % 461: 	jal 	PRINT_PC %
+0000035d : 00012083;   % 463: 	lw	ra, 0(sp) %
+0000035e : 00410113;   % 464: 	addi 	sp, sp, 4 %
+0000035f : 00008067;   % 465: 	ret	 %
+00000360 : 00000613;   % 468: 	li 	a2, 0 %
+00000361 : 00400693;   % 469: 	li 	a3, 4 %
+00000362 : 905ff0ef;   % 470: 	jal 	dois_iguais %
+00000363 : 02050063;   % 471: 	beqz 	a0, diag_59 		# dois iguais ? continua:proxima "adjacencia" %
+00000364 : 00800593;   % 472: 	li 	a1, 8 			# a1 vira indice 8 para a funcao vazia %
+00000365 : 1e9000ef;   % 473: 	jal 	vazia 			# verifica se a casa 9 esta livre %
+00000366 : 00050a63;   % 474: 	beqz 	a0, diag_59 		# livre ? marca : proxima "adjacencia"	 %
+00000367 : 55c000ef;   % 475: 	jal 	PRINT_PC %
+00000368 : 00012083;   % 477: 	lw 	ra, 0(sp) %
+00000369 : 00410113;   % 478: 	addi 	sp, sp, 4 %
+0000036a : 00008067;   % 479: 	ret %
+0000036b : 00400613;   % 482: 	li 	a2, 4 %
+0000036c : 00800693;   % 483: 	li 	a3, 8 %
+0000036d : 8d9ff0ef;   % 484: 	jal 	dois_iguais %
+0000036e : 02050063;   % 485: 	beqz 	a0, diag_19 		# dois iguais ? continua:proxima "adjacencia" %
+0000036f : 00000593;   % 486: 	li 	a1, 0 			# a1 vira indice 0 para a funcao vazia %
+00000370 : 1bd000ef;   % 487: 	jal 	vazia 			# verifica se a casa 1 esta livre %
+00000371 : 00050a63;   % 488: 	beqz 	a0, diag_19 		# livre ? marca : proxima "adjacencia"	 %
+00000372 : 530000ef;   % 489: 	jal 	PRINT_PC %
+00000373 : 00012083;   % 491: 	lw 	ra, 0(sp) %
+00000374 : 00410113;   % 492: 	addi	sp, sp, 4 %
+00000375 : 00008067;   % 493: 	ret %
+00000376 : 00000613;   % 496: 	li 	a2, 0 %
+00000377 : 00800693;   % 497: 	li 	a3, 8 %
+00000378 : 8adff0ef;   % 498: 	jal 	dois_iguais %
+00000379 : 02050063;   % 499: 	beqz 	a0, diag_35 		# dois iguais ? continua:proxima "adjacencia" %
+0000037a : 00400593;   % 500: 	li 	a1, 4 			# a1 vira indice 4 para a funcao vazia %
+0000037b : 191000ef;   % 501: 	jal 	vazia 			# verifica se a casa 5 esta livre %
+0000037c : 00050a63;   % 502: 	beqz 	a0, diag_35 		# livre ? marca : proxima "adjacencia"	 %
+0000037d : 504000ef;   % 503: 	jal 	PRINT_PC %
+0000037e : 00012083;   % 505: 	lw 	ra, 0(sp) %
+0000037f : 00410113;   % 506: 	addi 	sp, sp, 4 %
+00000380 : 00008067;   % 507: 	ret		 %
+00000381 : 00200613;   % 510: 	li 	a2, 2 %
+00000382 : 00400693;   % 511: 	li 	a3, 4 %
+00000383 : 881ff0ef;   % 512: 	jal 	dois_iguais %
+00000384 : 02050063;   % 513: 	beqz 	a0, diag_57 		# dois iguais ? continua:proxima "adjacencia" %
+00000385 : 00600593;   % 514: 	li 	a1, 6 			# a1 vira indice 4 para a funcao vazia %
+00000386 : 165000ef;   % 515: 	jal 	vazia 			# verifica se a casa 5 esta livre %
+00000387 : 00050a63;   % 516: 	beqz 	a0, diag_57 		# livre ? marca : proxima "adjacencia"	 %
+00000388 : 4d8000ef;   % 517: 	jal 	PRINT_PC %
+00000389 : 00012083;   % 519: 	lw 	ra, 0(sp) %
+0000038a : 00410113;   % 520: 	addi 	sp, sp, 4 %
+0000038b : 00008067;   % 521: 	ret	 %
+0000038c : 00400613;   % 524: 	li 	a2, 4 %
+0000038d : 00600693;   % 525: 	li 	a3, 6 %
+0000038e : 855ff0ef;   % 526: 	jal 	dois_iguais %
+0000038f : 02050063;   % 527: 	beqz 	a0, diag_37 		# dois iguais ? continua:proxima "adjacencia" %
+00000390 : 00200593;   % 528: 	li 	a1, 2 			# a1 vira indice 2 para a funcao vazia %
+00000391 : 139000ef;   % 529: 	jal 	vazia 			# verifica se a casa 3 esta livre %
+00000392 : 00050a63;   % 530: 	beqz 	a0, diag_37		# livre ? marca : proxima "adjacencia"	 %
+00000393 : 4ac000ef;   % 531: 	jal 	PRINT_PC %
+00000394 : 00012083;   % 533: 	lw 	ra, 0(sp) %
+00000395 : 00410113;   % 534: 	addi 	sp, sp, 4 %
+00000396 : 00008067;   % 535: 	ret	 %
+00000397 : 00200613;   % 538: 	li 	a2, 2 %
+00000398 : 00600693;   % 539: 	li 	a3, 6 %
+00000399 : 829ff0ef;   % 540: 	jal 	dois_iguais %
+0000039a : 00050a63;   % 541: 	beqz 	a0, fim_do_g_ou_b 	# dois iguais ? continua:proxima "adjacencia" %
+0000039b : 00400593;   % 542: 	li 	a1, 4 			# a1 vira indice 4 para a funcao vazia %
+0000039c : 10d000ef;   % 543: 	jal 	vazia 			# verifica se a casa 5 esta livre %
+0000039d : 00050463;   % 544: 	beqz 	a0, fim_do_g_ou_b 	# livre ? marca : proxima "adjacencia"	 %
+0000039e : 480000ef;   % 545: 	jal 	PRINT_PC %
+0000039f : 00012083;   % 548: 	lw 	ra, 0(sp) %
+000003a0 : 00410113;   % 549: 	addi 	sp, sp, 4 %
+000003a1 : 00008067;   % 550: 	ret %
+000003a2 : ffc10113;   % 2: 	addi	sp, sp, -4 %
+000003a3 : 00112023;   % 3: 	sw 	ra, 0(sp) %
+000003a4 : 0014a293;   % 4: 	slti 	t0, s1, 1 %
+000003a5 : 00028663;   % 5: 	beqz 	t0, pula_IA1 %
+000003a6 : 939ff0ef;   % 6: 	jal 	IA_facil		# pula para cada IA. Se ela nao foi a escolhida, retorna sem fazer nada           %
+000003a7 : 0180006f;   % 7: 	j 	Fim_IA %
+000003a8 : 0024a293;   % 9: 	slti 	t0, s1, 2 %
+000003a9 : 00028663;   % 10: 	beqz 	t0, pula_IA2 %
+000003aa : 955ff0ef;   % 11: 	jal 	IA_media %
+000003ab : 0080006f;   % 12: 	j 	Fim_IA %
+000003ac : 98dff0ef;   % 14: 	jal 	IA_dificil			  %
+000003ad : 00000c13;   % 16: 	li 	s8, 0               # turn = 0 => vez eh do usuario %
+000003ae : 00000413;   % 17: 	li 	s0, 0               # available = 0 %
+000003af : 00012083;   % 19: 	lw 	ra, 0(sp)	 %
+000003b0 : 00410113;   % 20: 	addi 	sp, sp, 4 %
+000003b1 : 005a2293;   % 21: 	slti	t0, s4, 5	 %
+000003b2 : 00029463;   % 22: 	bnez	t0, condicao_2 %
+000003b3 : c64ff06f;   % 23: 	j	Exit %
+000003b4 : 00008067;   % 25: 	ret %
+000003b5 : ffc10113;   % 7: 	addi 	sp, sp, -4 				# aloca espaco na pilha %
+000003b6 : 00112023;   % 8: 	sw 	ra, 0(sp) 				# salva o endereco de retorno %
+000003b7 : 0fc0f297;   % 9: 	la 	t0, posicao_seletor 			# carrega a posicao atual do personagem %
+000003b8 : 14828293;   % 9:  %
+000003b9 : 0fc0f317;   % 10: 	la 	t1, posicao_seletor_velha 		# carrega a posicao antiga do personagem  %
+000003ba : 14430313;   % 10:  %
+000003bb : 0002a383;   % 11: 	lw 	t2, 0(t0) 				# grava no registrador t2 as duas posicoes  %
+000003bc : 00732023;   % 12: 	sw 	t2, 0(t1) 				# salva no endereco da posicao antiga do personagem a localizacao atual %
+000003bd : 00a282b3;   % 13: 	add	t0, t0, a0 %
+000003be : 00029303;   % 14: 	lh 	t1, 0(t0) 				# grava no registrador t1 o valor dentro do endereco t0+offsset %
+000003bf : 00b30333;   % 15: 	add 	t1, t1, a1 				# adiciona o imediato em t1 %
+000003c0 : 00a00e33;   % 16: 	mv 	t3, a0 					# carrega o valor de offset no registrador t3 %
+000003c1 : 001e2e13;   % 17: 	slti 	t3, t3, 1 				# seta t3 com 0 ou 1 depedendo do se o t3 for menor que o imediato 1 %
+000003c2 : 03c00e93;   % 18: 	li 	t4, 60 					# carrega o imediato 320 no registrador t4 %
+000003c3 : 000e1463;   % 19: 	bnez 	t3, escolhelimite2 			# se t3 nao for igual a zero vai para a label indicada %
+000003c4 : 01800e93;   % 20: 	 li 	t4, 24 					# carrega o imediato 240 no registrador t4 %
+000003c5 : a5d36263;   % 22: 	bltu 	t1, t4, Game_Loop 			# condicao que verifica os limites %
+000003c6 : 10700e93;   % 23: 	li 	t4, 263 				# carrega o imediato 320 no registrador t4 %
+000003c7 : 000e1463;   % 24: 	bnez 	t3, escolhelimite1 			# se t3 nao for igual a zero vai para a label indicada %
+000003c8 : 0e300e93;   % 25: 	 li 	t4, 227 				# carrega o imediato 240 no registrador t4 %
+000003c9 : a3d37a63;   % 27: 	bgeu 	t1, t4, Game_Loop 			# condicao que verifica se os limites estao entre 0 e 320 ou 240 %
+000003ca : 00629023;   % 28: 	sh 	t1, 0(t0) 				# grava no endereco t0+offset o valor no registrador t1 %
+000003cb : 00000693;   % 29: 	li	a3,0 %
+000003cc : 0fc11297;   % 30: 	la 	t0, Image5 				# carrega o sprite com o seletor %
+000003cd : 52c28293;   % 30:  %
+000003ce : 00500533;   % 31: <10> mv 	a0, t0 	# carrega o sprite especicado no endereco da label %
+000003cf : 0fc0f717;   % 31: <11> la 	a4, posicao_seletor 	# carrega o endereco da label posicao personagem %
+000003d0 : 0e870713;   % 31:  %
+000003d1 : 00071583;   % 31: <12> lh 	a1, 0(a4) 	# atribui o primeiro valor da posicao em a1 %
+000003d2 : 00271603;   % 31: <13> lh 	a2, 2(a4) 	# atribui o primeiro valor da posicao em a2 %
+000003d3 : 00000317;   % 32: 	call 	PRINTSeletor 				# chama a funcao print %
+000003d4 : 450300e7;   % 32:  %
+000003d5 : 00100693;   % 33: 	li	a3, 1 %
+000003d6 : 00000317;   % 34: 	call	PRINTSeletor %
+000003d7 : 444300e7;   % 34:  %
+000003d8 : 0fc21297;   % 35: 	la	t0, CasaSemMiolo#Image4# %
+000003d9 : 94428293;   % 35:  %
+000003da : 00000693;   % 36: 	li	a3, 0 %
+000003db : 00500533;   % 37: <10> mv 	a0, t0 	# carrega o sprite especicado no endereco da label %
+000003dc : 0fc0f717;   % 37: <11> la 	a4, posicao_seletor_velha 	# carrega o endereco da label posicao personagem %
+000003dd : 0b870713;   % 37:  %
+000003de : 00071583;   % 37: <12> lh 	a1, 0(a4) 	# atribui o primeiro valor da posicao em a1 %
+000003df : 00271603;   % 37: <13> lh 	a2, 2(a4) 	# atribui o primeiro valor da posicao em a2 %
+000003e0 : 00000317;   % 38: 	call 	PRINTSeletor 				# chama a funcao print %
+000003e1 : 41c300e7;   % 38:  %
+000003e2 : 00100693;   % 39: 	li	a3, 1 %
+000003e3 : 00000317;   % 40: 	call	PRINTSeletor %
+000003e4 : 410300e7;   % 40:  %
+000003e5 : 00012083;   % 41: 	lw 	ra, 0(sp) 				# recupera o valor do ponteiro de retorno %
+000003e6 : 00410113;   % 42: 	addi 	sp, sp, 4 				# desoloca memoria na pilha %
+000003e7 : 00008067;   % 43: 	ret 						# retorna para o programa que chamou a funcao %
+000003e8 : ffc10113;   % 13: 	addi 	sp, sp, -4 	# aloca memoria na pilha %
+000003e9 : 00112023;   % 14: 	sw 	ra, 0(sp) 	# salva o ponteiro de retorno na pilha %
+000003ea : 00c008b3;   % 15: 	mv	a7, a2 %
+000003eb : 07100613;   % 16: 	li 	a2, 113 	# y = 113 %
+000003ec : 02054663;   % 17: 	bltz	a0, pula_mov1 	# se a quantidade de movimento for negativa eu estou na esquerda caso contrario na direita %
+000003ed : 00b00533;   % 18: 	mv 	a0, a1 		# endereco do sprite que quero imprimir %
+000003ee : 05800593;   % 19: 	li	a1, 88 		# x = 88 %
+000003ef : 00000317;   % 20: 	call 	PRINT 		# chamo a funcao para imprimir %
+000003f0 : 100300e7;   % 20:  %
+000003f1 : 01100533;   % 21: 	mv	a0, a7 		# endereco do sprite que quero imprimir %
+000003f2 : 0c000593;   % 22: 	li	a1, 192 	# x = 192 %
+000003f3 : 00000317;   % 23: 	call 	PRINT 		# chamo a funcao para imprimir %
+000003f4 : 0f0300e7;   % 23:  %
+000003f5 : 00100513;   % 24: 	li	a0, 1 		# troca o resultado da funcao Movimenta_Setup %
+000003f6 : 0280006f;   % 25: 	j 	Fim_mov1 	# pulo para o final da funcao Movimenta_Setup %
+000003f7 : 00e00533;   % 27: 	mv 	a0, a4 		# endereco do sprite que quero imprimir %
+000003f8 : 0c000593;   % 28: 	li	a1, 192 	# x = 192 %
+000003f9 : 00000317;   % 29: 	call 	PRINT 		# chamo a PRINT %
+000003fa : 0d8300e7;   % 29:  %
+000003fb : 00f00533;   % 30: 	mv 	a0, a5 		# endereco do sprite que quero imprimir funcao para imprimir %
+000003fc : 05800593;   % 31: 	li	a1, 88 		# x = 88 %
+000003fd : 00000317;   % 32: 	call 	PRINT 		# chamo a funcao para imprimir %
+000003fe : 0c8300e7;   % 32:  %
+000003ff : 00000513;   % 33: 	li	a0, 0		# troca o resultado da funcao movimenta_setup %
+00000400 : 00012083;   % 35: 	lw 	ra, 0(sp) 	# recupero o ponteiro de retorno da pilha	 %
+00000401 : 00410113;   % 36: 	addi 	sp, sp, 4 	# desaloco memoria da pilha %
+00000402 : 00008067;   % 37: 	ret 			# retorna para o programa que chamou a funcao %
+00000403 : ffc10113;   % 16: 	addi 	sp, sp, -4 		# aloca memoria na pilha %
+00000404 : 00112023;   % 17: 	sw 	ra, 0(sp) 		# salva o ponteiro de retorno nan pilha %
+00000405 : 07100613;   % 18: 	li 	a2, 113 		# y = 113 %
+00000406 : 01050333;   % 19: 	add	t1, a0, a6 %
+00000407 : 00300393;   % 20: 	li	t2, 3 %
+00000408 : 08737663;   % 21: 	bgeu	t1, t2, Fim_mov2 %
+00000409 : 00a008b3;   % 22: 	mv 	a7, a0 %
+0000040a : 0fc14517;   % 23: 	la 	a0, Image13 %
+0000040b : 5b450513;   % 23:  %
+0000040c : 00100e13;   % 24: 	li	t3, 1 %
+0000040d : 05800593;   % 25: 	li	a1, 88 %
+0000040e : 03c84263;   % 26: 	blt	a6, t3, pula1_mov2 %
+0000040f : 0fc15517;   % 27: 	la 	a0, Image14 %
+00000410 : be850513;   % 27:  %
+00000411 : 00200e13;   % 28: 	li	t3, 2 %
+00000412 : 08c00593;   % 29: 	li	a1, 140 %
+00000413 : 01c84863;   % 30: 	blt	a6, t3, pula1_mov2 %
+00000414 : 0fc16517;   % 31: 	la 	a0, Image16 %
+00000415 : 86450513;   % 31:  %
+00000416 : 0c000593;   % 32: 	li	a1, 192 %
+00000417 : 01180833;   % 34: 	add	a6, a6, a7 		# troca o valor do registrador em a6 que indica qual dificuldade estamos selecionando %
+00000418 : 006008b3;   % 35: 	mv	a7, t1 %
+00000419 : 00000317;   % 36: 	call	PRINT %
+0000041a : 058300e7;   % 36:  %
+0000041b : 01100333;   % 37: 	mv	t1, a7 %
+0000041c : 0fc14517;   % 38: 	la 	a0, Image12 %
+0000041d : f2450513;   % 38:  %
+0000041e : 00100e13;   % 39: 	li	t3, 1 %
+0000041f : 05800593;   % 40: 	li	a1, 88 %
+00000420 : 03c34263;   % 41: 	blt	t1, t3, pula2_mov2 %
+00000421 : 0fc15517;   % 42: 	la 	a0, Image15 %
+00000422 : 1e850513;   % 42:  %
+00000423 : 00200e13;   % 43: 	li	t3, 2 %
+00000424 : 08c00593;   % 44: 	li	a1, 140 %
+00000425 : 01c34863;   % 45: 	blt	t1, t3, pula2_mov2 %
+00000426 : 0fc16517;   % 46: 	la 	a0, Image17 %
+00000427 : e6450513;   % 46:  %
+00000428 : 0c000593;   % 47: 	li	a1, 192 %
+00000429 : 00000317;   % 49: 	call	PRINT %
+0000042a : 018300e7;   % 49:  %
+0000042b : 01000533;   % 51: 	mv 	a0, a6			# retorna a0 como sendo o valor em a6 %
+0000042c : 00012083;   % 52: 	lw 	ra, 0(sp) 		# recupero o ponteiro de retorno da pilha	 %
+0000042d : 00410113;   % 53: 	addi 	sp, sp, 4 		# desaloco memoria da pilha %
+0000042e : 00008067;   % 54: 	ret 				# retorna para o programa que chamou a funcao %
+0000042f : ffc10113;   % 17: 	addi 	sp, sp, -4 		# aloca espaco na pilha %
+00000430 : 00112023;   % 18: 	sw 	ra, 0(sp) 		# salva o endereco de retorno %
+00000431 : 000012b7;   % 19: 	li 	t0, 0xFF0 		# carrega 0xFF0 em t0 %
+00000432 : ff028293;   % 19:  %
+00000433 : 00d282b3;   % 20: 	add 	t0, t0, a3 		# adiciona o frame ao FF0 (se o frame for 1 vira FF1, se for 0 fica FF0) %
+00000434 : 01429293;   % 21: 	slli 	t0, t0, 20 		# shift de 20 bits pra esquerda (0xFF0 vira 0xFF000000, 0xFF1 vira 0xFF100000) %
+00000435 : 00b282b3;   % 22: 	add 	t0, t0, a1 		# adiciona x ao t0 %
+00000436 : 14000313;   % 23: 	li 	t1, 320 		# t1 = 320 %
+00000437 : 02c30333;   % 24: 	mul 	t1, t1, a2 		# t1 = 320 * y %
+00000438 : 006282b3;   % 25: 	add 	t0, t0, t1 		# adiciona t1 ao t0 %
+00000439 : 00850313;   % 26: 	addi 	t1, a0, 8		# t1 = a0 + 8 %
+0000043a : 000003b3;   % 27: 	mv 	t2, zero		# zera t2 %
+0000043b : 00000e33;   % 28: 	mv 	t3, zero 		# zera t3 %
+0000043c : 00052e83;   % 29: 	lw 	t4, 0(a0) 		# carrega a largura em t4 %
+0000043d : 00452f03;   % 30: 	lw 	t5, 4(a0) 		# carrega a altura em t5 %
+0000043e : 00032f83;   % 32: 	lw 	t6, 0(t1) 		# carrega em t6 uma word (4 pixeis) da imagem %
+0000043f : 01f2a023;   % 33: 	sw 	t6, 0(t0) 		# imprime no bitmap a word (4 pixeis) da imagem %
+00000440 : 00428293;   % 34: 	addi 	t0, t0, 4		# incrementa endereco do bitmap %
+00000441 : 00430313;   % 35: 	addi 	t1, t1, 4		# incrementa endereco da imagem %
+00000442 : 004e0e13;   % 36: 	addi 	t3, t3, 4		# incrementa contador de coluna %
+00000443 : ffde46e3;   % 37: 	blt 	t3, t4, PRINT_LINHA 	# se contador da coluna < largura, continue imprimindo %
+00000444 : 14028293;   % 38: 	addi 	t0, t0, 320 		# t0 += 320 %
+00000445 : 41d282b3;   % 39: 	sub 	t0, t0, t4 		# t0 -= largura da imagem %
+00000446 : 00000e33;   % 41: 	mv 	t3, zero		# zera t3 (contador de coluna) %
+00000447 : 00138393;   % 42: 	addi 	t2, t2, 1		# incrementa contador de linha %
+00000448 : fde3cce3;   % 43: 	bgt 	t5, t2, PRINT_LINHA 	# se altura > contador de linha, continue imprimindo %
+00000449 : 00012083;   % 44: 	lw 	ra, 0(sp) 		# recupera o valor do ponteiro de retorno %
+0000044a : 00410113;   % 45: 	addi 	sp, sp, 4 		# desoloca memoria na pilha %
+0000044b : 00008067;   % 46: 	ret 	# retorna para o programa que chamou a funcao %
+0000044c : fe810113;   % 2: 	addi 	sp, sp, -24 		# desloca memoria na pilha %
+0000044d : 002002b3;   % 3: 	mv 	t0, sp %
+0000044e : 00112023;   % 4: 	sw 	ra, 0(sp) 		# recupera o valor do ponteiro de retorno %
+0000044f : 01012223;   % 5: 	sw	a6, 4(sp) %
+00000450 : 00f12423;   % 6: 	sw	a5, 8(sp) %
+00000451 : 00e12623;   % 7: 	sw	a4, 12(sp) %
+00000452 : 01312823;   % 8: 	sw	s3, 16(sp) %
+00000453 : 00812a23;   % 9: 	sw	s0, 20(sp) %
+00000454 : 00052e83;   % 10: 	lw 	t4, 0(a0) 		# carrega a largura em t4 %
+00000455 : 00452f03;   % 11: 	lw	t5, 4(a0) %
+00000456 : 00001837;   % 12: 	li 	a6, 0xFF0 		# carrega 0xFF0 em t0 %
+00000457 : ff080813;   % 12:  %
+00000458 : 00d80833;   % 13: 	add 	a6, a6, a3 		# adiciona o frame ao FF0 (se o frame for 1 vira FF1, se for 0 fica FF0) %
+00000459 : 01481813;   % 14: 	slli 	a6, a6, 20 		# shift de 20 bits pra esquerda (0xFF0 vira 0xFF000000, 0xFF1 vira 0xFF100000) %
+0000045a : 00b80833;   % 15: 	add 	a6, a6, a1 		# adiciona x ao t0 %
+0000045b : 000003b3;   % 20: 	mv	t2, zero %
+0000045c : 00000e33;   % 21: 	mv	t3, zero %
+0000045d : 00200cb3;   % 22: 	mv	s9, sp %
+0000045e : 04460693;   % 23: 	addi	a3, a2, 68 %
+0000045f : ffc10113;   % 25: 	addi	sp, sp, -4 %
+00000460 : 00082f83;   % 26: 	lw	t6, 0(a6) 		# carrega do bit map e coloca na pilha %
+00000461 : 01f12023;   % 27: 	sw	t6, 0(sp) %
+00000462 : 00480813;   % 28: 	addi	a6, a6, 4 %
+00000463 : 004e0e13;   % 29: 	addi	t3, t3, 4 %
+00000464 : ffde46e3;   % 30: 	blt 	t3, t4, SalvaSprite 	# se contador da coluna < largura, continue imprimindo %
+00000465 : 14080813;   % 31: 	addi 	a6, a6, 320 		# t0 += 320 %
+00000466 : 41d80833;   % 32: 	sub 	a6, a6, t4 		# t0 -= largura da imagem %
+00000467 : 00000e33;   % 34: 	mv 	t3, zero		# zera t3 (contador de coluna) %
+00000468 : 00138393;   % 35: 	addi	t2, t2, 1	 %
+00000469 : fcd3cce3;   % 36: 	bgt	a3, t2, SalvaSprite 	# se altura > contador de linha, continue imprimindo %
+0000046a : 00000893;   % 37: 	li	a7, 0 %
+0000046b : 00000993;   % 38: 	li	s3, 0 %
+0000046c : 00144413;   % 40: 	xori	s0, s0,1 %
+0000046d : 008006b3;   % 41: 	mv 	a3, s0 %
+0000046e : 00001837;   % 42: 	li 	a6, 0xFF0 		# carrega 0xFF0 em t0 %
+0000046f : ff080813;   % 42:  %
+00000470 : 00d80833;   % 43: 	add 	a6, a6, a3 		# adiciona o frame ao FF0 (se o frame for 1 vira FF1, se for 0 fica FF0) %
+00000471 : 01481813;   % 44: 	slli 	a6, a6, 20 		# shift de 20 bits pra esquerda (0xFF0 vira 0xFF000000, 0xFF1 vira 0xFF100000) %
+00000472 : 00b80833;   % 45: 	add 	a6, a6, a1 		# adiciona x ao t0 %
+00000473 : 14000e13;   % 46: 	li	t3, 320 %
+00000474 : 01100333;   % 47: 	mv	t1, a7 			#lembrar de aumentar esse t1 %
+00000475 : 026e0e33;   % 48: 	mul	t3, t3, t1 %
+00000476 : 01c80833;   % 49: 	add	a6, a6, t3 %
+00000477 : 000003b3;   % 50: 	mv	t2, zero %
+00000478 : 00000e33;   % 51: 	mv	t3, zero %
+00000479 : 00850313;   % 52: 	addi	t1, a0, 8 %
+0000047a : 005006b3;   % 53: 	mv	a3, t0 %
+0000047b : 00030f83;   % 55: 	lb 	t6, 0(t1) 		# carrega em t6 uma word (4 pixeis) da imagem %
+0000047c : fc700293;   % 56: 	li	t0, -57 %
+0000047d : 01f28463;   % 57: 	beq	t0, t6, pula_animado %
+0000047e : 01f80023;   % 58: 	sb	t6, 0(a6) 		# imprime no bitmap a word (4 pixeis) da imagem %
+0000047f : 00180813;   % 60: 	addi 	a6, a6, 1		# incrementa endereco do bitmap %
+00000480 : 00130313;   % 61: 	addi 	t1, t1, 1		# incrementa endereco da imagem %
+00000481 : 001e0e13;   % 62: 	addi 	t3, t3, 1		# incrementa contador de coluna %
+00000482 : ffde42e3;   % 63: 	blt 	t3, t4, PRINT_LINHA_animado # se contador da coluna < largura, continue imprimindo %
+00000483 : 14080813;   % 64: 	addi 	a6, a6, 320 		# t0 += 320 %
+00000484 : 41d80833;   % 65: 	sub 	a6, a6, t4 		# t0 -= largura da imagem %
+00000485 : 00000e33;   % 67: 	mv 	t3, zero		# zera t3 (contador de coluna) %
+00000486 : 00138393;   % 68: 	addi 	t2, t2, 1		# incrementa contador de linha %
+00000487 : fde3c8e3;   % 69: 	bgt 	t5, t2, PRINT_LINHA_animado # se altura > contador de linha, continue imprimindo %
+00000488 : ff2002b7;   % 70: 	li 	t0, 0xFF200604		# carrega em t0 o endereco de troca de frame %
+00000489 : 60428293;   % 70:  %
+0000048a : 0082a023;   % 71: 	sw 	s0, 0(t0) %
+0000048b : 00d002b3;   % 72: 	mv	t0,a3			 %
+0000048c : 008006b3;   % 73: 	mv	a3,s0 %
+0000048d : 0016c693;   % 74: 	xori	a3,a3,1 %
+0000048e : 00001837;   % 75: 	li 	a6, 0xFF0 		# carrega 0xFF0 em t0 %
+0000048f : ff080813;   % 75:  %
+00000490 : 00d80833;   % 76: 	add 	a6, a6, a3 		# adiciona o frame ao FF0 (se o frame for 1 vira FF1, se for 0 fica FF0) %
+00000491 : 01481813;   % 77: 	slli 	a6, a6, 20 		# shift de 20 bits pra esquerda (0xFF0 vira 0xFF000000, 0xFF1 vira 0xFF100000) %
+00000492 : 00b80833;   % 78: 	add 	a6, a6, a1 		# adiciona x ao t0 %
+00000493 : 14000e13;   % 79: 	li	t3, 320 %
+00000494 : 01300333;   % 80: 	mv	t1, s3 			# lembrar de aumentar esse t1 %
+00000495 : 026e0e33;   % 81: 	mul	t3, t3, t1 %
+00000496 : 01c80833;   % 82: 	add	a6, a6, t3 %
+00000497 : 000003b3;   % 83: 	mv	t2, zero %
+00000498 : 00000e33;   % 84: 	mv	t3, zero	 %
+00000499 : ffcc8c93;   % 86: 	addi	s9, s9, -4 %
+0000049a : 000caf83;   % 87: 	lw	t6, 0(s9) 		# carrega a word que foi salva na pilha %
+0000049b : 01f82023;   % 88: 	sw 	t6, 0(a6) 		# imprime no bitmap a word (4 pixeis) que foi salva na pilha %
+0000049c : 00480813;   % 89: 	addi 	a6, a6, 4		# incrementa endereco do bitmap %
+0000049d : 004e0e13;   % 90: 	addi	t3, t3, 4 %
+0000049e : ffde46e3;   % 91: 	blt 	t3, t4, RecuperaSprite  # se contador da coluna < largura, continue imprimindo %
+0000049f : 14080813;   % 92: 	addi 	a6, a6, 320 		# t0 += 320 %
+000004a0 : 41d80833;   % 93: 	sub 	a6, a6, t4 		# t0 -= largura da imagem %
+000004a1 : 00000e33;   % 95: 	mv 	t3, zero		# zera t3 (contador de coluna) %
+000004a2 : 00138393;   % 96: 	addi 	t2, t2, 1	 %
+000004a3 : fde3cce3;   % 97: 	bgt 	t5, t2, RecuperaSprite 	# se altura > contador de linha, continue imprimindo %
+000004a4 : 00001337;   % 99: 	li	t1, 4624 %
+000004a5 : 21030313;   % 99:  %
+000004a6 : 0119d863;   % 100: 	ble	a7, s3, pula_incrementa %
+000004a7 : 00001337;   % 101: 	li	t1, 4488 %
+000004a8 : 18830313;   % 101:  %
+000004a9 : 00298993;   % 102: 	addi	s3, s3, 2 %
+000004aa : 00288893;   % 104: 	addi	a7, a7, 2 %
+000004ab : 01930cb3;   % 105: 	add	s9, t1, s9 %
+000004ac : f11650e3;   % 106: 	ble	a7, a2, Loop %
+000004ad : 00500133;   % 108: 	mv	sp, t0 %
+000004ae : 00144413;   % 110: 	xori 	s0, s0, 1 %
+000004af : 008006b3;   % 111: 	mv 	a3, s0 %
+000004b0 : 00000317;   % 113: 	call 	PRINTSeletor %
+000004b1 : 0dc300e7;   % 113:  %
+000004b2 : 00000413;   % 115: 	li 	s0, 0 %
+000004b3 : ff2002b7;   % 116: 	li 	t0, 0xFF200604		# carrega em t0 o endereco de troca de frame %
+000004b4 : 60428293;   % 116:  %
+000004b5 : 0082a023;   % 117: 	sw 	s0, 0(t0) %
+000004b6 : 00012083;   % 119: 	lw 	ra, 0(sp) 		# recupera o valor do ponteiro de retorno %
+000004b7 : 00412803;   % 120: 	lw	a6, 4(sp) %
+000004b8 : 00812783;   % 121: 	lw	a5, 8(sp) %
+000004b9 : 00c12703;   % 122: 	lw	a4, 12(sp) %
+000004ba : 01012983;   % 123: 	lw	s3, 16(sp) %
+000004bb : 01412403;   % 124: 	lw	s0, 20(sp) %
+000004bc : 01810113;   % 125: 	addi 	sp, sp, 24 		# desoloca memoria na pilha %
+000004bd : 00008067;   % 126: 	ret %
+000004be : ffc10113;   % 7: 	addi 	sp, sp, -4 %
+000004bf : 00112023;   % 8: 	sw 	ra, 0(sp) %
+000004c0 : 00100413;   % 10: 	li 	s0, 1      	# seta available=1 (somente para a IA_dificil) %
+000004c1 : 0fc0f297;   % 12: 	la 	t0, BOARD %
+000004c2 : cfc28293;   % 12:  %
+000004c3 : 00259313;   % 13: 	slli 	t1, a1, 2 %
+000004c4 : 006282b3;   % 14: 	add 	t0, t0, t1 	# t0 = endereco de board[a1] %
+000004c5 : 00100313;   % 15: 	li 	t1, 1       	# t1 = 1 %
+000004c6 : 0062a023;   % 16: 	sw 	t1, 0(t0)   	# board[a1] = 1 (0 para vago, 1 para PC e 2 para USER) %
+000004c7 : 00300393;   % 23: 	li 	t2, 3       	# setando t2 = 3 para div e mul %
+000004c8 : 0275ee33;   % 24: 	rem 	t3, a1, t2 	# t3 <- u %
+000004c9 : 0275ceb3;   % 25: 	div 	t4, a1, t2 	# t4 <- v  %
+000004ca : 00b00833;   % 26: 	mv 	a6, a1 %
+000004cb : 00300713;   % 27: 	li 	a4, 3 %
+000004cc : 03d70733;   % 28: 	mul 	a4, a4, t4 %
+000004cd : 01c007b3;   % 29: 	mv 	a5,t3 %
+000004ce : 04400293;   % 31: 	li 	t0, 68      	# t0 <- tamanho do pulo em x %
+000004cf : 04400313;   % 32: 	li 	t1, 68     	# t1 <- tamanho do pulo em y %
+000004d0 : 025e0e33;   % 33: 	mul 	t3, t3, t0 	# t3 <- ux  %
+000004d1 : 026e8eb3;   % 34: 	mul 	t4, t4, t1 	# t4 <- vy  %
+000004d2 : 03c00293;   % 35: 	li 	t0, 60      	# t0 <- x0 = 60 => pos. de referencia em x %
+000004d3 : 01800313;   % 36: 	li 	t1, 24      	# t1 <- y0 = 25 => pos. de referencia em y %
+000004d4 : 005e0e33;   % 37: 	add 	t3, t3, t0 	# t3 <- ux + x0 => pos. inicial em x %
+000004d5 : 006e8eb3;   % 38: 	add 	t4, t4, t1 	# t3 <- vy + y0 => pos. inicial em y	 %
+000004d6 : 0fc0f517;   % 41: 	la 	a0, Image2	# Image2 = O %
+000004d7 : cd450513;   % 41:  %
+000004d8 : 000b9663;   % 42: 	bnez 	s7, pula_PC %
+000004d9 : 0fc10517;   % 43: 	la 	a0, Image3 	# Image3 = X %
+000004da : ee050513;   % 43:  %
+000004db : 01c005b3;   % 45: 	mv 	a1, t3     	# carrega o endereco correto de x no bitmap para impressao  %
+000004dc : 01d00633;   % 46: 	mv 	a2, t4     	# carrega o endereco correto de y no bitmap para impressao %
+000004dd : 00000693;   % 47: 	li 	a3, 0      	# frame de impressao %
+000004de : 00000317;   % 48: 	call 	PRINT_animado   # chama a funcao para printar o simbolo %
+000004df : db8300e7;   % 48:  %
+000004e0 : fffd8d93;   % 49: 	addi 	s11, s11, -1    # occupied++  %
+000004e1 : 00100893;   % 50: 	li 	a7, 1 		# passa qual o simbolo que quero testar se ganhou %
+000004e2 : fffff317;   % 51: 	call 	ganhou %
+000004e3 : 354300e7;   % 51:  %
+000004e4 : 00012083;   % 52: 	lw 	ra, 0(sp) %
+000004e5 : 00410113;   % 53: 	addi 	sp, sp, 4 %
+000004e6 : 00008067;   % 54: 	ret %
+000004e7 : ffc10113;   % 17: 	addi 	sp, sp, -4 			# aloca espaco na pilha %
+000004e8 : 00112023;   % 18: 	sw 	ra, 0(sp) 			# salva o endereco de retorno %
+000004e9 : 000012b7;   % 19: 	li 	t0, 0xFF0 			# carrega 0xFF0 em t0 %
+000004ea : ff028293;   % 19:  %
+000004eb : 00d282b3;   % 20: 	add 	t0, t0, a3 			# adiciona o frame ao FF0 (se o frame for 1 vira FF1, se for 0 fica FF0) %
+000004ec : 01429293;   % 21: 	slli 	t0, t0, 20 			# shift de 20 bits pra esquerda (0xFF0 vira 0xFF000000, 0xFF1 vira 0xFF100000) %
+000004ed : 00b282b3;   % 22: 	add 	t0, t0, a1 			# adiciona x ao t0 %
+000004ee : 14000313;   % 23: 	li 	t1, 320 			# t1 = 320 %
+000004ef : 02c30333;   % 24: 	mul 	t1, t1, a2 			# t1 = 320 * y %
+000004f0 : 006282b3;   % 25: 	add 	t0, t0,t1 			# adiciona t1 ao t0 %
+000004f1 : 00850313;   % 26: 	addi 	t1, a0,8			# t1 = a0 + 8 %
+000004f2 : 000003b3;   % 27: 	mv 	t2, zero			# zera t2 %
+000004f3 : 00000e33;   % 28: 	mv 	t3, zero 			# zera t3 %
+000004f4 : 00052e83;   % 29: 	lw 	t4, 0(a0) 			# carrega a largura em t4 %
+000004f5 : 00452f03;   % 30: 	lw 	t5, 4(a0) 			# carrega a altura em t5 %
+000004f6 : 00030f83;   % 32: 	lb 	t6, 0(t1) 			# carrega em t6 uma word (1 pixeis) da imagem %
+000004f7 : fc700c93;   % 33: 	li	s9, -57 %
+000004f8 : 019f8463;   % 34: 	beq	t6, s9, PulaInvisivel %
+000004f9 : 01f28023;   % 35: 	sb 	t6, 0(t0) 			# imprime no bitmap a word (1 pixeis) da imagem %
+000004fa : 00128293;   % 37: 	addi 	t0, t0, 1			# incrementa endereco do bitmap %
+000004fb : 00130313;   % 38: 	addi 	t1, t1, 1			# incrementa endereco da imagem %
+000004fc : 001e0e13;   % 39: 	addi 	t3, t3, 1			# incrementa contador de coluna %
+000004fd : ffde42e3;   % 40: 	blt 	t3, t4, PRINT_LINHASeletor 	# se contador da coluna < largura, continue imprimindo %
+000004fe : 14028293;   % 41: 	addi 	t0, t0, 320 			# t0 += 320 %
+000004ff : 41d282b3;   % 42: 	sub 	t0, t0, t4 			# t0 -= largura da imagem %
+00000500 : 00000e33;   % 44: 	mv 	t3, zero			# zera t3 (contador de coluna) %
+00000501 : 00138393;   % 45: 	addi 	t2, t2, 1			# incrementa contador de linha %
+00000502 : fde3c8e3;   % 46: 	bgt 	t5, t2, PRINT_LINHASeletor 	# se altura > contador de linha, continue imprimindo %
+00000503 : 00012083;   % 47: 	lw 	ra, 0(sp) 			# recupera o valor do ponteiro de retorno %
+00000504 : 00410113;   % 48: 	addi 	sp, sp, 4 			# desoloca memoria na pilha %
+00000505 : 00008067;   % 49: 	ret 					# retorna para o programa que chamou a funcao %
+00000506 : 00000293;   % 3: 	li	t0, 0x00000000 %
+00000507 : ff000337;   % 4: 	li	t1, 0xFF000000 %
+00000508 : 00030313;   % 4:  %
+00000509 : ff0133b7;   % 5: 	li	t2, 0xFF012C00 %
+0000050a : c0038393;   % 5:  %
+0000050b : 00068a63;   % 6: 	beqz	a3, LoopPreto %
+0000050c : ff100337;   % 7: 	li	t1, 0xFF100000 %
+0000050d : 00030313;   % 7:  %
+0000050e : ff1133b7;   % 8: 	li	t2, 0xFF112C00 %
+0000050f : c0038393;   % 8:  %
+00000510 : 00730863;   % 10: 	beq	t1, t2, FundoFim %
+00000511 : 00532023;   % 11: 	sw	t0, 0(t1) %
+00000512 : 00430313;   % 12: 	addi	t1, t1, 4 %
+00000513 : ff5ff06f;   % 13: 	j 	LoopPreto %
+00000514 : 00008067;   % 15: 	ret %
+00000515 : ffc10113;   % 20: 	addi 	sp, sp, -4 %
+00000516 : 00112023;   % 21: 	sw	ra, 0(sp) %
+00000517 : 000006b3;   % 23: 	mv	a3, x0 %
+00000518 : 00000317;   % 24: 	call	PrintFundo %
+00000519 : fb8300e7;   % 24:  %
+0000051a : 0fc13517;   % 26: 	la	a0, Image9 %
+0000051b : e9c50513;   % 26:  %
+0000051c : 05800593;   % 27: 	li	a1, 88 %
+0000051d : 07100613;   % 28: 	li	a2, 113 %
+0000051e : 00000317;   % 29: 	call 	PRINT %
+0000051f : c44300e7;   % 29:  %
+00000520 : 0fc13517;   % 30: 	la	a0, Image8 %
+00000521 : 83c50513;   % 30:  %
+00000522 : 0c000593;   % 31: 	li	a1, 192 %
+00000523 : 00000317;   % 32: 	call 	PRINT %
+00000524 : c30300e7;   % 32:  %
+00000525 : 0fc1a517;   % 33: 	la	a0, chooseSymb %
+00000526 : 6f850513;   % 33:  %
+00000527 : 00000593;   % 34: 	li	a1, 0 %
+00000528 : 04d00613;   % 35: 	li	a2, 77 %
+00000529 : 00000317;   % 36: 	call 	PRINT %
+0000052a : c18300e7;   % 36:  %
+0000052b : 00012083;   % 38: 	lw	ra, 0(sp) %
+0000052c : 00410113;   % 39: 	addi	sp, sp, 4 %
+0000052d : 00008067;   % 40: 	ret %
+0000052e : ffc10113;   % 45: 	addi 	sp, sp, -4 %
+0000052f : 00112023;   % 46: 	sw	ra, 0(sp) %
+00000530 : 00100693;   % 48: 	li	a3, 1 %
+00000531 : 00000317;   % 49: 	call	PrintFundo %
+00000532 : f54300e7;   % 49:  %
+00000533 : 0fc14517;   % 51: 	la	a0, Image12 %
+00000534 : ac850513;   % 51:  %
+00000535 : 05800593;   % 52: 	li	a1, 88 %
+00000536 : 07100613;   % 53: 	li	a2, 113 %
+00000537 : 00000317;   % 54: 	call 	PRINT %
+00000538 : be0300e7;   % 54:  %
+00000539 : 0fc14517;   % 55: 	la	a0, Image14 %
+0000053a : 74050513;   % 55:  %
+0000053b : 08c00593;   % 56: 	li	a1, 140 %
+0000053c : 00000317;   % 57: 	call 	PRINT %
+0000053d : bcc300e7;   % 57:  %
+0000053e : 0fc15517;   % 58: 	la	a0, Image16 %
+0000053f : 3bc50513;   % 58:  %
+00000540 : 0c000593;   % 59: 	li	a1, 192 %
+00000541 : 00000317;   % 60: 	call 	PRINT %
+00000542 : bb8300e7;   % 60:  %
+00000543 : 0fc19517;   % 61: 	la	a0, chooseDiff %
+00000544 : d7850513;   % 61:  %
+00000545 : 00000593;   % 62: 	li	a1, 0 %
+00000546 : 04d00613;   % 63: 	li	a2, 77 %
+00000547 : 00000317;   % 64: 	call 	PRINT %
+00000548 : ba0300e7;   % 64:  %
+00000549 : 00012083;   % 66: 	lw	ra, 0(sp) %
+0000054a : 00410113;   % 67: 	addi	sp, sp, 4 %
+0000054b : 00008067;   % 68: 	ret %
+0000054c : ffc10113;   % 73: 	addi 	sp, sp, -4 %
+0000054d : 00112023;   % 74: 	sw	ra, 0(sp) %
+0000054e : 00000317;   % 76: 	call	PrintFundo %
+0000054f : ee0300e7;   % 76:  %
+00000550 : 0fc1e517;   % 78: 	la	a0, Placar %
+00000551 : 83450513;   % 78:  %
+00000552 : 00000593;   % 79: 	li	a1, 0 %
+00000553 : 00800613;   % 80: 	li	a2, 8 %
+00000554 : 00000317;   % 81: 	call 	PRINT	 %
+00000555 : b6c300e7;   % 81:  %
+00000556 : 0fc1f517;   % 83: 	la	a0, Casa %
+00000557 : c2450513;   % 83:  %
+00000558 : 03c00593;   % 84: 	li	a1, 60		# canto superior esquerdo %
+00000559 : 01800613;   % 85: 	li	a2, 24 %
+0000055a : 00000317;   % 86: 	call 	PRINT %
+0000055b : b54300e7;   % 86:  %
+0000055c : 08000593;   % 87: 	li	a1, 128		# aresta superior  %
+0000055d : 00000317;   % 88: 	call 	PRINT %
+0000055e : b48300e7;   % 88:  %
+0000055f : 0c400593;   % 89: 	li	a1, 196		# canto superior direito  %
+00000560 : 00000317;   % 90: 	call 	PRINT	 %
+00000561 : b3c300e7;   % 90:  %
+00000562 : 03c00593;   % 91: 	li	a1, 60		# aresta esquerda  %
+00000563 : 05c00613;   % 92: 	li	a2, 92 %
+00000564 : 00000317;   % 93: 	call 	PRINT %
+00000565 : b2c300e7;   % 93:  %
+00000566 : 08000593;   % 94: 	li	a1, 128		# miolo %
+00000567 : 00000317;   % 95: 	call 	PRINT	 %
+00000568 : b20300e7;   % 95:  %
+00000569 : 0c400593;   % 96: 	li	a1, 196		# aresta direita  %
+0000056a : 00000317;   % 97: 	call 	PRINT %
+0000056b : b14300e7;   % 97:  %
+0000056c : 03c00593;   % 98: 	li	a1, 60		# canto inferior esquerdo %
+0000056d : 0a000613;   % 99: 	li	a2, 160 %
+0000056e : 00000317;   % 100: 	call 	PRINT %
+0000056f : b04300e7;   % 100:  %
+00000570 : 08000593;   % 101: 	li	a1, 128		# aresta inferior %
+00000571 : 00000317;   % 102: 	call 	PRINT %
+00000572 : af8300e7;   % 102:  %
+00000573 : 0c400593;   % 103: 	li	a1, 196		# canto infeiror direito  %
+00000574 : 00000317;   % 104: 	call 	PRINT %
+00000575 : aec300e7;   % 104:  %
+00000576 : 0fc20517;   % 106: 	la	a0, mariozin	# mario %
+00000577 : dbc50513;   % 106:  %
+00000578 : 01400593;   % 107: 	li	a1, 20		 %
+00000579 : 0d200613;   % 108: 	li	a2, 210 %
+0000057a : 00000317;   % 109: 	call 	PRINT %
+0000057b : ad4300e7;   % 109:  %
+0000057c : 0fc20517;   % 110: 	la	a0, bowserzin	# bowser %
+0000057d : eac50513;   % 110:  %
+0000057e : 11800593;   % 111: 	li	a1, 280	 %
+0000057f : 0c200613;   % 112: 	li	a2, 194	 %
+00000580 : 00000317;   % 113: 	call 	PRINT %
+00000581 : abc300e7;   % 113:  %
+00000582 : 00012083;   % 116: 	lw	ra, 0(sp) %
+00000583 : 00410113;   % 117: 	addi	sp, sp, 4 %
+00000584 : 00008067;   % 118: 	ret %
+00000585 : ffc10113;   % 122: 	addi 	sp, sp, -4 %
+00000586 : 00112023;   % 123: 	sw	ra, 0(sp) %
+00000587 : 000006b3;   % 125: 	mv	a3, x0 %
+00000588 : 00000317;   % 126: 	call	PrintFundo %
+00000589 : df8300e7;   % 126:  %
+0000058a : 0fc1d517;   % 128: 	la	a0, PlayAgain %
+0000058b : d4450513;   % 128:  %
+0000058c : 00000593;   % 129: 	li	a1, 0 %
+0000058d : 05f00613;   % 130: 	li	a2, 95 %
+0000058e : 00000317;   % 131: 	call 	PRINT	 %
+0000058f : a84300e7;   % 131:  %
+00000590 : 0fc1c517;   % 132: 	la	a0, Mario %
+00000591 : 49c50513;   % 132:  %
+00000592 : 09b00593;   % 133: 	li	a1, 155 %
+00000593 : 03c00613;   % 134: 	li	a2, 60 %
+00000594 : 00000317;   % 135: 	call 	PrintByte	 %
+00000595 : 0b4300e7;   % 135:  %
+00000596 : 00012083;   % 137: 	lw	ra, 0(sp) %
+00000597 : 00410113;   % 138: 	addi	sp, sp, 4 %
+00000598 : 00008067;   % 139: 	ret %
+00000599 : ffc10113;   % 143: 	addi 	sp, sp, -4 %
+0000059a : 00112023;   % 144: 	sw	ra, 0(sp) %
+0000059b : 000006b3;   % 146: 	mv	a3, x0 %
+0000059c : 00000317;   % 147: 	call	PrintFundo %
+0000059d : da8300e7;   % 147:  %
+0000059e : 0fc1d517;   % 149: 	la	a0, PlayAgain %
+0000059f : cf450513;   % 149:  %
+000005a0 : 00000593;   % 150: 	li	a1, 0 %
+000005a1 : 05f00613;   % 151: 	li	a2, 95 %
+000005a2 : 00000317;   % 152: 	call 	PRINT	 %
+000005a3 : a34300e7;   % 152:  %
+000005a4 : 0fc1c517;   % 153: 	la	a0, Peach %
+000005a5 : 61450513;   % 153:  %
+000005a6 : 09600593;   % 154: 	li	a1, 150 %
+000005a7 : 02800613;   % 155: 	li	a2, 40 %
+000005a8 : 00000317;   % 156: 	call 	PrintByte	 %
+000005a9 : 064300e7;   % 156:  %
+000005aa : 00012083;   % 158: 	lw	ra, 0(sp) %
+000005ab : 00410113;   % 159: 	addi	sp, sp, 4 %
+000005ac : 00008067;   % 160: 	ret %
+000005ad : ffc10113;   % 164: 	addi 	sp, sp, -4 %
+000005ae : 00112023;   % 165: 	sw	ra, 0(sp) %
+000005af : 000006b3;   % 167: 	mv	a3, x0 %
+000005b0 : 00000317;   % 168: 	call	PrintFundo %
+000005b1 : d58300e7;   % 168:  %
+000005b2 : 0fc1d517;   % 170: 	la	a0, PlayAgain %
+000005b3 : ca450513;   % 170:  %
+000005b4 : 00000593;   % 171: 	li	a1, 0 %
+000005b5 : 05f00613;   % 172: 	li	a2, 95 %
+000005b6 : 00000317;   % 173: 	call 	PRINT	 %
+000005b7 : 9e4300e7;   % 173:  %
+000005b8 : 0fc1c517;   % 174: 	la	a0, Bowser %
+000005b9 : db450513;   % 174:  %
+000005ba : 08e00593;   % 175: 	li	a1, 142 %
+000005bb : 02800613;   % 176: 	li	a2, 40 %
+000005bc : 00000317;   % 177: 	call 	PrintByte	 %
+000005bd : 014300e7;   % 177:  %
+000005be : 00012083;   % 179: 	lw	ra, 0(sp) %
+000005bf : 00410113;   % 180: 	addi	sp, sp, 4 %
+000005c0 : 00008067;   % 181: 	ret	 %
+000005c1 : 000012b7;   % 11: 	li 	t0,0xFF0 # carrega 0xFF0 em t0 %
+000005c2 : ff028293;   % 11:  %
+000005c3 : 00d282b3;   % 12: 	add 	t0,t0,a3 # adiciona o frame ao FF0 (se o frame for 1 vira FF1, se for 0 fica FF0) %
+000005c4 : 01429293;   % 13: 	slli 	t0,t0,20 # shift de 20 bits pra esquerda (0xFF0 vira 0xFF000000, 0xFF1 vira 0xFF100000)	 %
+000005c5 : 00b282b3;   % 14: 	add 	t0,t0,a1 # adiciona x ao t0 %
+000005c6 : 14000313;   % 15: 	li 	t1,320 # t1 = 320 %
+000005c7 : 02c30333;   % 16: 	mul 	t1,t1,a2 # multiplica y por t1 %
+000005c8 : 006282b3;   % 17: 	add 	t0,t0,t1 # coloca o valor final do calculo do endereço em t0 %
+000005c9 : 00000333;   % 18: 	mv 	t1,zero # zera t2 %
+000005ca : 000003b3;   % 19: 	mv 	t2,zero # zera t3 %
+000005cb : 00052e03;   % 20: 	lw 	t3,0(a0) # carrega a largura em t3 %
+000005cc : 00452e83;   % 21: 	lw 	t4,4(a0) # carrega a altura em t4 %
+000005cd : 00850893;   % 22: 	addi 	a7,a0,8 # salvo o endereço da imagem passada para a função em a0 %
+000005ce : 00088f03;   % 25: 	lb t5,0(a7) # carrega em t6 uma word (4 pixeis) da imagem %
+000005cf : 01e28023;   % 26: 	sb t5,0(t0) # imprime no bitmap a word (4 pixeis) da imagem %
+000005d0 : 00128293;   % 27: 	addi t0,t0,1 # incrementa endereco do bitmap %
+000005d1 : 00188893;   % 28: 	addi a7,a7,1 # incrementa endereco da imagem %
+000005d2 : 00138393;   % 29: 	addi t2,t2,1 # incrementa contador de coluna %
+000005d3 : ffc3c6e3;   % 30: 	blt t2,t3,PRINT_LINHAByte # se contador da coluna < largura, continue imprimindo %
+000005d4 : 14028293;   % 31: 	addi t0,t0,320 # t0 += 320 %
+000005d5 : 41c282b3;   % 32: 	sub t0,t0,t3 # t0 -= largura da imagem %
+000005d6 : 000003b3;   % 34: 	mv t2,zero # zera t3 (contador de coluna) %
+000005d7 : 00130313;   % 35: 	addi t1,t1,1 # incrementa contador de linha %
+000005d8 : fdd34ce3;   % 36: 	bgt t4,t1,PRINT_LINHAByte # se altura > contador de linha, continue imprimindo	 %
+000005d9 : 00008067;   % 37: 	ret # retorna %
+000005da : c01022f3;   % 5: Sleep:  csrr 	t0, time		# le o tempo do sistema %
+000005db : 00a28333;   % 6: 	add 	t1, t0, a0		# soma com o tempo solicitado %
+000005dc : c01022f3;   % 8: 	csrr	t0, time		# le o tempo do sistema %
+000005dd : fe62cee3;   % 9: 	blt	t0, t1, SleepLoop	# t0<t1 ? %
+000005de : 00008067;   % 10: 	ret %
+000005df : 0fc0f297;   % 6: vazia:	la 	t0, BOARD  %
+000005e0 : 88428293;   % 6:  %
+000005e1 : 00259313;   % 7: 	slli 	t1, a1, 2 %
+000005e2 : 006282b3;   % 8: 	add 	t0, t0, t1 %
+000005e3 : 0002a283;   % 9: 	lw 	t0, 0(t0)      	# t0 = BOARD[a1] %
+000005e4 : 00028663;   % 10: 	beqz 	t0, ta_vazia 	# BOARD[a1]=0? casa vazia:casa ocupada %
+000005e5 : 00000513;   % 11: 	li 	a0, 0          	# casa ocupada => a0=0 %
+000005e6 : 00008067;   % 12: 	ret %
+000005e7 : 00100513;   % 14: 	li 	a0, 1          	# casa vazia => a0=1 %
+000005e8 : 00008067;   % 15: 	ret %
+END;
