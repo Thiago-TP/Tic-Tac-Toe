@@ -9,29 +9,14 @@
 Controle:
 	addi 	sp, sp, -4 		# aloca espaco na pilha
 	sw 	ra, 0(sp) 		# guarda o ponteiro de retorno
-
-	li	t1, 500
-	csrr 	t0, time		# le o tempo do sistema
-	add 	t1, t0, t1		# soma com o tempo solicitado
-SleepLoop1:	
-	csrr	t0, time		# le o tempo do sistema
-	sltu	t2, t0, t1
-	bne	t2, zero, SleepLoop1	# t0<t1 ?	
-	#bltu	t0, t1, SleepLoop
 	
 	li 	t1, 0xFF200000 		# carrega o endereco de controle do KDMMIO
 	lw 	t0, 0(t1) 		# Le bit de Controle Teclado
 	
-	#li	t2, 't'
-	#beq	t0, t2, shortcut
-	#shortcut:
-	#mv	s3, x0
-	#j	Pula20Partidas	
-	
 	andi 	t0, t0, 0x0001 		# mascara o bit menos significativo
    	beq 	t0, zero, FIM 		# Se nao ha tecla pressionada entao vai para FIM
   	mv	s5, t1
-  	la 	a4, posicao_seletor 	# carrega a posicao do seletor no  tabuleiro
+  	la 	a4, CURSOR_POSITION 	# carrega a posicao do seletor no  tabuleiro
 	lh 	a1, 0(a4) 		# atribui o primeiro valor da posicao em a1
 	lh 	a2, 2(a4) 		# atribui o primeiro valor da posicao em a2
 	addi	t0, a2, -24

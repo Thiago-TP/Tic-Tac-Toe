@@ -6,8 +6,8 @@
 Movimenta:
 	addi 	sp, sp, -4 				# aloca espaco na pilha
 	sw 	ra, 0(sp) 				# salva o endereco de retorno
-	la 	t0, posicao_seletor 			# carrega a posicao atual do personagem
-	la 	t1, posicao_seletor_velha 		# carrega a posicao antiga do personagem 
+	la 	t0, CURSOR_POSITION 			# carrega a posicao atual do personagem
+	la 	t1, CURSOR_OLD_POSITION 		# carrega a posicao antiga do personagem 
 	lw 	t2, 0(t0) 				# grava no registrador t2 as duas posicoes 
 	sw 	t2, 0(t1) 				# salva no endereco da posicao antiga do personagem a localizacao atual
 	add	t0, t0, a0
@@ -28,13 +28,23 @@ escolhelimite1:
 	sh 	t1, 0(t0) 				# grava no endereco t0+offset o valor no registrador t1
 	li	a3,0
 	la 	t0, Image5 				# carrega o sprite com o seletor
-	CarregaSprite(t0,posicao_seletor) 		# prepara os argumetos para a funcao print
+	
+	mv 	a0, t0 	# carrega o sprite especicado no endereco da label
+	la 	a4, CURSOR_POSITION 	# carrega o endereco da label posicao personagem
+	lh 	a1, 0(a4) 	# atribui o primeiro valor da posicao em a1
+	lh 	a2, 2(a4) 	# atribui o primeiro valor da posicao em a2
+	
 	call 	PRINTSeletor 				# chama a funcao print
 	li	a3, 1
 	call	PRINTSeletor
 	la	t0, CasaSemMiolo#Image4#
 	li	a3, 0
-	CarregaSprite(t0,posicao_seletor_velha) 	# chama o macro CarregaSprite
+	
+	mv 	a0, t0 	# carrega o sprite especicado no endereco da label
+	la 	a4, CURSOR_OLD_POSITION 	# carrega o endereco da label posicao personagem
+	lh 	a1, 0(a4) 	# atribui o primeiro valor da posicao em a1
+	lh 	a2, 2(a4) 	# atribui o primeiro valor da posicao em a2
+	
 	call 	PRINTSeletor 				# chama a funcao print
 	li	a3, 1
 	call	PRINTSeletor

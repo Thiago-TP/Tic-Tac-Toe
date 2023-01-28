@@ -1,5 +1,5 @@
 #########################################################################################
-#	esta "funcao" inclui todas as funcoes e sprites feitas pro jogo da velha	#
+#	this file includes all functions and sprites necessary for the running of main.s	#
 #########################################################################################
 .text
 .include "../funcoes/bmp_vira_indice.s"
@@ -22,19 +22,14 @@
 .include "../funcoes/Sleep.s"
 .include "../funcoes/vazia.s"
 
-
 .data
-#.include "../sprites/Image1.data"
 .include "../sprites/Image2.data"
 .include "../sprites/Image3.data"
-#.include "../sprites/Image4.data"
 .include "../sprites/Image5.data"
-#.include "../sprites/Image6.data"
 .include "../sprites/Image7.data"
 .include "../sprites/Image8.data"
 .include "../sprites/Image9.data"
 .include "../sprites/Image10.data"
-#.include "../sprites/Image11.data"
 .include "../sprites/Image12.data"
 .include "../sprites/Image13.data"
 .include "../sprites/Image14.data"
@@ -47,25 +42,11 @@
 .include "../sprites/Image21.data"
 .include "../sprites/Image22.data"
 .include "../sprites/Image23.data"
-#.include "../sprites/Image24.data"
 .include "../sprites/Image25.data"
 .include "../sprites/Image26.data"
 .include "../sprites/Image27.data"
 .include "../sprites/Image28.data"
-#.include "../sprites/Image29.data"
-#.include "../sprites/Image30.data"
-#.include "../sprites/Image31.data"
-#.include "../sprites/Image32.data"
-#.include "../sprites/Image33.data"
-#.include "../sprites/Image34.data"
-#.include "../sprites/Image35.data"
-#.include "../sprites/Image36.data"
-#.include "../sprites/Image37.data"
-#.include "../sprites/Image38.data"
-#.include "../sprites/Image39.data"
 
-
-# sprites novas para reduzir o abuso de memoria
 .include "../sprites/chooseDiff.data"
 .include "../sprites/chooseSymb.data"
 .include "../sprites/Bowser.data"

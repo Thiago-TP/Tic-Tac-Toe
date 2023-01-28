@@ -1,26 +1,27 @@
 .data	
-	BOARD: 				.word 0, 0, 0, 0, 0, 0, 0, 0, 0
-.eqv	porradopipeline			0
-	posicao_seletor: 		.half 60, 24 
-	posicao_seletor_velha: 		.half 60, 24
+	BOARD:					.byte 	0, 0, 0,	# state matrix of each board square 
+									0, 0, 0, 	# 0=empty square, 1=occupied ny PLAYER, 2=occupied by PC
+									0, 0, 0	
+	WIN_COMBO:				.byte -1, -1, -1	# indexes of the winning combination (initialized as -1 to avoid pseudo win)
+	CURSOR_POSITION:		.half 60, 24 		# keeps the desired (x, y) bitmap position of the cursor for animation purposes
+	CURSOR_OLD_POSITION:	.half 60, 24		# keeps the current (x, y) bitmap position of the cursor for animation purposes
+.eqv	FRAME_ADDRESS	0xFF200604				# memory address where value of frame being shown is kept
+.eqv	KEY_ADDRESS		0xFF200000				# memory address where value of keyboard input is kept
+
 .text
-
-####################################### MACROS ##########################################
-
-.macro CarregaSprite(%sprite,%posicao)
-	mv 	a0, %sprite 	# carrega o sprite especicado no endereco da label
-	la 	a4, %posicao 	# carrega o endereco da label posicao personagem
-	lh 	a1, 0(a4) 	# atribui o primeiro valor da posicao em a1
-	lh 	a2, 2(a4) 	# atribui o primeiro valor da posicao em a2
-.end_macro
 
 ################################# Programa Principal ####################################
 
+
+
+
+
+
 Setup:	
 	call	PrintTelaDificuldades		
-	li	s7, 0 				# inicia com o valor do simbolo escolhido pelo jogador como zero
+	li		s7, 0 					# inicia com o valor do simbolo escolhido pelo jogador como zero
 	call	PrintTelaSimbolos
-	li	a0, 0
+	li		a0, 0
 LOOP1:
 	la	a1, Image10 			# O selecionado
 	la	a2, Image7 			# X nao selecionado
@@ -193,12 +194,12 @@ Loop_reinicia2:
 	addi	t3, t3, -1
 	addi	t2, t2, 68
 	bnez	t3, Loop_reinicia1
-	la	t0, posicao_seletor
+	la	t0, CURSOR_POSITION
 	li	t1, 60
 	sh	t1, 0(t0)
 	li	t1, 24
 	sh	t1, 2(t0)
-	la	t0, posicao_seletor_velha
+	la	t0, CURSOR_OLD_POSITION
 	li	t1, 60
 	sh	t1, 0(t0)
 	li	t1, 24
