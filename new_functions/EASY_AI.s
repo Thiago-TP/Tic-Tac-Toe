@@ -28,16 +28,17 @@ EASY_AI:
 	sb      t1, 0(t0)           	# updates BOARD
 	call	CONVERT_IND_TO_POS		# calculates (a1, a2) according to the index in a0
 
-	la		a4, X_SYMBOL
-	beqz	s0, PC_GOT_O
-
-	END_EASY_AI:
-		call	MARK_SQUARE
+	call 	GET_PC_SYMBOL
+	call	MARK_SQUARE
 
 	# recovering of return address 
 	lw		ra, 0(sp)
 	addi	sp, sp, 4
 	ret	
-
-PC_GOT_O:	la		a4, O_SYMBOL
-			j		END_EASY_AI
+		
+GET_PC_SYMBOL:
+	la		a4, X_SYMBOL
+	beqz	s0, PC_GOT_O	
+	ret
+	PC_GOT_O:	la		a4, O_SYMBOL
+				ret

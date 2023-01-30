@@ -16,9 +16,6 @@ CHECK_END:
 
 	li		a0, -1
 
-	call	CHECK_TIE
-	beqz	a0, END_CHECK
-
 	call	CHECK_LINES
 	bgtz	a0, END_CHECK
 
@@ -26,6 +23,9 @@ CHECK_END:
 	bgtz	a0, END_CHECK
 
 	call	CHECK_DIAGONALS
+	bgtz	a0, END_CHECK
+
+	call	CHECK_TIE
 
 	END_CHECK:
 		# recovering of return address 

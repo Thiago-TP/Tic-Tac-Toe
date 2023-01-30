@@ -28,6 +28,8 @@
     .include "../new_functions/CHOOSE_SYMBOL.s"
 
     .include "../new_functions/EASY_AI.s"
+    .include "../new_functions/MEDIUM_AI.s"
+    .include "../new_functions/HARD_AI.s"
 
     .include "../new_functions/INITIALIZE_BOARD.s"
     .include "../new_functions/INITIALIZE_VARIABLES.s"
