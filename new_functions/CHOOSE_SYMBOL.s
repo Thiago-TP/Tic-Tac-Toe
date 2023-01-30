@@ -16,15 +16,14 @@ CHOOSE_SYMBOL:
 	sw		ra, 0(sp)
 
 	# printing of the screens
-	li		a0, 1
-	call	PRINT_SYMBOL_SCREEN	# frame a0=1 screen (O selected, at the left)
+	li		a3, 1
+	call	PRINT_SYMBOL_SCREEN	# frame a3 = 1 screen (O selected, at the left)
 	
 	li		t0, FRAME_ADDRESS
-	li		t1, 1
-	sw		t1, 0(t0)			# shows frame 1
+	sw		a3, 0(t0)			# shows frame 1
 
-	li		a0, 0
-	call	PRINT_SYMBOL_SCREEN # frame a0=0 screen (X selected, at the right)
+	li		a3, 0
+	call	PRINT_SYMBOL_SCREEN # frame a3 = 0 screen (X selected, at the right)
 
 	# keypoll
 	SYMB_LOOP:
@@ -52,9 +51,9 @@ CHOOSE_SYMBOL:
 	# recovering of return address 
 	lw		ra, 0(sp)
 	addi	sp, sp, 4
-	ret								# symbol was selected, GAME goes on
+	ret								# symbol was selected, game goes on
 
-# switches shown frame (0->1, 1->0)	#
+# switches shown frame (0->1, 1->0)	
 SWITCH_SYMBOL:
 	li		t0, FRAME_ADDRESS
 	lw		t1, 0(t0)

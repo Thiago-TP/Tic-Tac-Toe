@@ -3,22 +3,47 @@
 #########################################################################################
 .data
     .include "../new_sprites/CHAR_TABLE.data"
-    .include "../new_sprites/SQUARE.data"
+
     .include "../new_sprites/CURSOR.data"
+    .include "../new_sprites/SMALL_CURSOR.data"
+    .include "../new_sprites/SMALL_CURSOR_HUSK.data"
+
     .include "../new_sprites/O_SYMBOL.data"
     .include "../new_sprites/X_SYMBOL.data"
+    .include "../new_sprites/SQUARE.data"
+
+    .include "../new_sprites/GREEN_SHELL.data"
+    .include "../new_sprites/RED_SHELL.data"
+    .include "../new_sprites/SPIKY_SHELL.data"
 
     .include "../new_sprites/bowserzin.data"
     .include "../new_sprites/mariozin.data"
 
 .text
     .include "../new_functions/BLACK_SCREEN.s"
+
+    .include "../new_functions/CHECK_END.s"
+
     .include "../new_functions/CHOOSE_DIFFICULTY.s"
     .include "../new_functions/CHOOSE_SYMBOL.s"
+
+    .include "../new_functions/EASY_AI.s"
+
     .include "../new_functions/INITIALIZE_BOARD.s"
     .include "../new_functions/INITIALIZE_VARIABLES.s"
-    .include "../new_functions/PRINT_BOARD.s"
+
+    .include "../new_functions/MARK_SQUARE.s"
+
+    .include "../new_functions/PLAYER_TURN.s"
+    .include "../new_functions/PC_TURN.s"
+
+    .include "../new_functions/PRINT_BOARD_SCREEN.s"
     .include "../new_functions/PRINT_CHAR.s"
+    .include "../new_functions/PRINT_DIFFICULTY_SCREEN.s"
     .include "../new_functions/PRINT_STRING.s"
     .include "../new_functions/PRINT_SYMBOL_SCREEN.s"
     .include "../new_functions/PRINT.s"
+
+    .include "../new_functions/RETURN_BACKGROUND.s"
+    .include "../new_functions/STASH_BACKGROUND.s"
+    .include "../new_functions/SHOW_SCORES.s"

@@ -5,10 +5,11 @@
 #	This function should be called by CHOOSE_SYMBOL only.	#
 #############################################################
 #	- Inputs -					#
-#	a0 = desired frame (0 or 1)	#
-#	- Output -					#
-#	printed screen				#
+#	a3 = desired frame (0 or 1)	#
 #################################
+#	- Output -		#
+#	printed screen	#
+#####################
 PRINT_SYMBOL_SCREEN:
 	# return address shall be preserved as other functions will be called
 	addi	sp, sp, -4
@@ -18,7 +19,6 @@ PRINT_SYMBOL_SCREEN:
 	call	BLACK_SCREEN
 
 	# print tutorial messages
-	mv		a3, a0
 	la		a0, CHOOSE_SYMBOL_MSG1
 	li		a1, 88
 	li		a2, 33
