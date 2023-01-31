@@ -34,6 +34,8 @@
     .include "../new_functions/INITIALIZE_BOARD.s"
     .include "../new_functions/INITIALIZE_VARIABLES.s"
 
+    .include "../new_functions/MAKE_OR_BLOCK_TRIPLE.s"
+
     .include "../new_functions/MARK_SQUARE.s"
 
     .include "../new_functions/PLAYER_TURN.s"

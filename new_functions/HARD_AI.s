@@ -15,6 +15,12 @@ HARD_AI:
     sw      ra, 0(sp)
 
     call    GET_PC_SYMBOL       # loads in a4 PC's sprite
+    
+    call 	MAKE_TRIPLE         # marks a triple, if possible
+	bgtz 	a1, END_HARD_AI 	# move available => we're done
+	
+	call 	BLOCK_TRIPLE        # blocks a triple, if possible
+	bgtz 	a1, END_HARD_AI 	# move available => we're done
 
     call 	MARK_CENTER         # marks the center, if possible
 	bgtz 	a1, END_HARD_AI 	# move available => we're done
@@ -26,18 +32,40 @@ HARD_AI:
 	bgtz 	a1, END_HARD_AI 	# move available => we're done
 
     call 	MARK_EMPTY_SQUARE   # marks an empty house (always possible, since the AIs aren't called it the game tied)
-
-    # call 	MAKE_TRIPLE         # marks a triple, if possible
-	# bnez 	s0, fim_do_dificil 	# move available => we're done
-	
-	# call 	BLOCK_TRIPLE        # blocks a triple, if possible
-	# bnez 	s0, fim_do_dificil 	# move available => we're done
 	
     END_HARD_AI:
 	# recovering of return address 
 	lw		ra, 0(sp)
 	addi	sp, sp, 4
 	ret	
+
+
+MAKE_TRIPLE:
+    # return address shall be preserved as other functions will be called
+    addi    sp, sp, -4
+    sw      ra, 0(sp)
+
+    li      s11, 2
+    call    MAKE_OR_BLOCK_TRIPLE
+
+    # recovering of return address 
+	lw		ra, 0(sp)
+	addi	sp, sp, 4
+	ret
+
+BLOCK_TRIPLE:
+    # return address shall be preserved as other functions will be called
+    addi    sp, sp, -4
+    sw      ra, 0(sp)
+
+    li      s11, 1
+    call    MAKE_OR_BLOCK_TRIPLE
+
+    # recovering of return address 
+	lw		ra, 0(sp)
+	addi	sp, sp, 4
+	ret
+
 
 #####################################################
 #   PC plays in the center if it is not occupied    #
@@ -65,47 +93,6 @@ MARK_CENTER:
 	lw		ra, 0(sp)
 	addi	sp, sp, 4
 	ret	
-
-#############################################
-#   PC plays in the first available corner  #
-#############################################
-#   - Input -       #
-#   BOARD struct    #
-#####################
-#   - Output -  #
-#   PC play     #
-#################
-MARK_SOME_CORNER:
-	# return address shall be preserved as other functions will be called
-    addi    sp, sp, -4
-    sw      ra, 0(sp)
-
-    li      a0, 0
-    call    CHECK_SQUARE
-    bnez    a1, FREE_CORNER
-
-    li      a0, 2
-    call    CHECK_SQUARE
-    bnez    a1, FREE_CORNER
-
-    li      a0, 6
-    call    CHECK_SQUARE
-    bnez    a1, FREE_CORNER
-
-    li      a0, 8
-    call    CHECK_SQUARE
-    bnez    a1, FREE_CORNER
-    j       CORNERS_FILLED
-
-    FREE_CORNER:
-        call    CONVERT_IND_TO_POS
-        call    MARK_SQUARE
-
-    CORNERS_FILLED:
-    # recovering of return address 
-	lw		ra, 0(sp)
-	addi	sp, sp, 4
-	ret
 
 
 #############################################
@@ -166,41 +153,50 @@ MARK_OPPOSITE_CORNER:
 	ret
 
 
-#########################################################
-#   Sees if BOARD at index a0 is empty (has value 0).   #
-#   If so, marks it as occupied by PC.                  #
-#########################################################
-#   - Input -                           #
-#   a0 = BOARD index (0, 1, ..., or 8)  #
-#########################################
-#   - Output -                  #
-#   a1 = 1 if empty, 0 if not   # <- EMPTY flag
-#################################
-CHECK_SQUARE:
-    la      t0, BOARD
-    add     t0, t0, a0 
-    lbu     t1, 0(t0)
-    bnez    t1, SQUARE_FILLED
+#############################################
+#   PC plays in the first available corner  #
+#############################################
+#   - Input -       #
+#   BOARD struct    #
+#####################
+#   - Output -  #
+#   PC play     #
+#################
+MARK_SOME_CORNER:
+	# return address shall be preserved as other functions will be called
+    addi    sp, sp, -4
+    sw      ra, 0(sp)
 
-    li      t1, 2
-    sb      t1, 0(t0)
-    li      a1, 1
-    END_CHECK_SQUARE:
-    ret
+    li      a0, 0
+    call    CHECK_SQUARE
+    bnez    a1, FREE_CORNER
 
-SQUARE_FILLED:  li  a1, 0
-                j   END_CHECK_SQUARE
+    li      a0, 2
+    call    CHECK_SQUARE
+    bnez    a1, FREE_CORNER
 
-CHECK_CORNER:
-    la      t1, BOARD
-    add     t0, t0, t1
-    lbu     t0, 0(t0)   # t0 = 0, 1, or 2 (empty, player, pc)
-    addi    t0, t0, -1  # t0 = -1, 0, or 1
-    ret
+    li      a0, 6
+    call    CHECK_SQUARE
+    bnez    a1, FREE_CORNER
+
+    li      a0, 8
+    call    CHECK_SQUARE
+    bnez    a1, FREE_CORNER
+    j       CORNERS_FILLED
+
+    FREE_CORNER:
+        call    CONVERT_IND_TO_POS
+        call    MARK_SQUARE
+
+    CORNERS_FILLED:
+    # recovering of return address 
+	lw		ra, 0(sp)
+	addi	sp, sp, 4
+	ret
 
 
 ##################################################################
-#   Marks the first available spot in BOARD with PC's SYMBOL.    #
+#   Marks with PC's SYMBOL the first available spot in BOARD.    #
 ##################################################################
 #   - Input -       #
 #   BOARD struct    #
@@ -227,3 +223,47 @@ MARK_EMPTY_SQUARE:
 	lw		ra, 0(sp)
 	addi	sp, sp, 4
 	ret
+
+
+#########################################################
+#   Sees if BOARD at index a0 is empty (has value 0).   #
+#   If so, marks it as occupied by PC.                  #
+#########################################################
+#   - Input -                           #
+#   a0 = BOARD index (0, 1, ..., or 8)  #
+#########################################
+#   - Output -                  #
+#   a1 = 1 if empty, 0 if not   # <- EMPTY flag
+#################################
+CHECK_SQUARE:
+    la      t0, BOARD
+    add     t0, t0, a0 
+    lbu     t1, 0(t0)
+    bnez    t1, SQUARE_FILLED
+
+    li      t1, 2
+    sb      t1, 0(t0)
+    li      a1, 1
+    END_CHECK_SQUARE:
+    ret
+
+SQUARE_FILLED:  li  a1, 0
+                j   END_CHECK_SQUARE
+
+
+#########################################################
+#   Sees if BOARD at index a0 is empty (has value 0).   #
+#   If so, marks it as occupied by PC.                  #
+#########################################################
+#   - Input -                           #
+#   t0 = BOARD index (0, 1, ..., or 8)  #
+#########################################
+#   - Output -                      #
+#   t0 = 0 iff occupied by PLAYER   # 
+#####################################
+CHECK_CORNER:
+    la      t1, BOARD
+    add     t0, t0, t1
+    lbu     t0, 0(t0)   # t0 = 0, 1, or 2 (empty, player, pc)
+    addi    t0, t0, -1  # t0 = -1, 0, or 1
+    ret
