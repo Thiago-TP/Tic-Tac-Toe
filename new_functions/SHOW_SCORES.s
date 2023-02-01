@@ -16,7 +16,7 @@ SHOW_SCORES:
     sw		s1, 4(sp)
 
     # prints counters messages
-    la      a0, BOARD_MSG1          # "Wins:"
+    la      a0, BOARD_MSG1          # ""Use WASD to move, ENTER to play""
     li      a1, 67
     li      a2, 1
     li      a4, TIE_MSG_COLOR

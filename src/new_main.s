@@ -9,9 +9,10 @@
 	.eqv	FRAME_ADDRESS	0xFF200604			# memory address where value of frame being shown is kept
 	.eqv	KEY_ADDRESS		0xFF200000			# memory address where value of keyboard input is kept
 
-	.eqv	TIE_MSG_COLOR	0x00540035			# neutral message color 
+	.eqv	TIE_MSG_COLOR	0x00540035			# standard message color 
 	.eqv	BAD_MSG_COLOR	0x00020007			# bad news message color 
 	.eqv	GOOD_MSG_COLOR	0x00500038			# good news message color
+	.eqv 	GRAY_MSG_COLOR	0x00090052			# currently unselected message color
 	
 	# communication messages
 	CHOOSE_SYMBOL_MSG1:	.string		"Move the cursor with AD,"
@@ -28,6 +29,14 @@
 	BOARD_MSG3:	.string "Losses:"
 	BOARD_MSG4:	.string "Ties:"
 	BOARD_MSG5:	.string "Games played:"
+
+	END_MSG1:	.string "Play again?"
+	END_MSG2:	.string "YES"
+	END_MSG3:	.string "NO"
+	END_MSG4:	.string "YOU WON!"
+	END_MSG5:	.string "YOU LOST!"
+	END_MSG6:	.string "TIE!"
+	END_MSG7:	.string "THANK YOU FOR PLAYING!"
 
 	# counter of wins (0xww), losses (0xll), ties (0xtt), and games played (0xgg)
 	THE_BIG_COUNTER:	.word	0x00000000	# 0xww_ll_tt_gg
@@ -55,7 +64,3 @@
 		END:	j	END_SCREEN
 
 .include "new_all.s"
-	
-
-END_SCREEN:
-	j END_SCREEN  # jump to LOOP

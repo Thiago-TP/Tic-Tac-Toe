@@ -33,12 +33,12 @@ PRINT_BOARD_SCREEN:
         bgtz    a5, BOARD_LINE_LOOP # if there are any lines left, loop back
     
     # prints decoration characters
-    la      a0, mariozin
+    la      a0, SMALL_MARIO
     li      a1, 24
     li      a2, 224
     call    PRINT           # 16x16 mario on the left
 
-    la      a0, bowserzin
+    la      a0, SMALL_BOWSER
     li      a1, 272
     li      a2, 208
     call    PRINT           # 32x32 bowser on the right    
@@ -65,6 +65,6 @@ PRINT_BOARD_SCREEN:
 PLAYING_ON_EASY:    la  a0, CHOOSE_DIFFICULTY_MSG1
                     j   REVEAL_DIFFICULTY
 PLAYING_ON_MEDIUM:  la  a0, CHOOSE_DIFFICULTY_MSG2
-                    li      a1, 115
+                    li  a1, 115
                     j   REVEAL_DIFFICULTY
     

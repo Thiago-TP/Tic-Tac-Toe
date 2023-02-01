@@ -16,8 +16,12 @@
     .include "../new_sprites/RED_SHELL.data"
     .include "../new_sprites/SPIKY_SHELL.data"
 
-    .include "../new_sprites/bowserzin.data"
-    .include "../new_sprites/mariozin.data"
+    .include "../new_sprites/SMALL_BOWSER.data"
+    .include "../new_sprites/SMALL_MARIO.data"
+
+    .include "../new_sprites/BOWSER.data"
+    .include "../new_sprites/MARIO.data"
+    .include "../new_sprites/PEACH.data"
 
 .text
     .include "../new_functions/BLACK_SCREEN.s"
@@ -26,6 +30,7 @@
 
     .include "../new_functions/CHOOSE_DIFFICULTY.s"
     .include "../new_functions/CHOOSE_SYMBOL.s"
+    .include "../new_functions/END_SCREEN.s"
 
     .include "../new_functions/EASY_AI.s"
     .include "../new_functions/MEDIUM_AI.s"
@@ -44,6 +49,7 @@
     .include "../new_functions/PRINT_BOARD_SCREEN.s"
     .include "../new_functions/PRINT_CHAR.s"
     .include "../new_functions/PRINT_DIFFICULTY_SCREEN.s"
+    .include "../new_functions/PRINT_END_SCREEN.s"
     .include "../new_functions/PRINT_STRING.s"
     .include "../new_functions/PRINT_SYMBOL_SCREEN.s"
     .include "../new_functions/PRINT.s"
