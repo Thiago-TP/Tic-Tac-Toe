@@ -53,7 +53,6 @@ CHECK_LINES:
 		lw		ra, 0(sp)
 		addi	sp, sp, 4
 		ret	
-
 CHECK_LINE:
 	lbu 	t1, 0(t0)
 	lbu 	t2, 1(t0)
@@ -84,7 +83,6 @@ CHECK_COLUMNS:
 		lw		ra, 0(sp)
 		addi	sp, sp, 4
 		ret	
-
 CHECK_COLUMN:
 	lbu 	t1, 0(t0)
 	lbu 	t2, 3(t0)
@@ -108,7 +106,6 @@ CHECK_DIAGONALS:
 	bne		t2, t3, NEXT_DIAGONAL
 	mv		a0, t1
 	j		END_CHECK_DIAGONALS
-
 	NEXT_DIAGONAL:
 		lb		t1, 2(t0)
 		lb		t2, 4(t0)
@@ -162,7 +159,7 @@ UPDATE_COUNTERS:
 
 	addi	t4, t4, 1				# one more game has ended
 	
-	updates each counter according to a0
+	# updates each counter according to a0
 	beqz	a0, GOTO_TIE
 	li 		t5, 1
 	beq		a0, t5, GOTO_WIN
