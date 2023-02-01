@@ -2,7 +2,7 @@
 	BOARD:					.byte 	0, 0, 0,	# state matrix of each board square 
 									0, 0, 0, 	# 0=empty square, 1=occupied ny PLAYER, 2=occupied by PC
 									0, 0, 0	
-	WIN_COMBO:				.byte -1, -1, -1	# indexes of the winning combination (initialized as -1 to avoid pseudo win)
+	WIN_COMBO:				.byte 0, 1, 2	# indexes of the winning combination (initialized as -1 to avoid pseudo win)
 	CURSOR_POSITION:		.half 50, 100 		# keeps the desired (x, y) bitmap position of the cursor for animation purposes
 	CURSOR_OLD_POSITION:	.half 50, 100		# keeps the current (x, y) bitmap position of the cursor for animation purposes
 	
@@ -13,12 +13,15 @@
 	.eqv	BAD_MSG_COLOR	0x00020007			# bad news message color 
 	.eqv	GOOD_MSG_COLOR	0x00500038			# good news message color
 	.eqv 	GRAY_MSG_COLOR	0x00090052			# "currently unselected" message color
+
+	# counter of wins (0xww), losses (0xll), ties (0xtt), games played (0xgg)
+	THE_BIG_COUNTER:	.word	0x00000000	# 0xww_ll_tt_gg
 	
 	# communication messages
-	CHOOSE_SYMBOL_MSG1:	.string		"Move the cursor with AD,"
-	CHOOSE_SYMBOL_MSG2:	.string		"and confirm your symbol with ENTER"
-	CHOOSE_SYMBOL_MSG3:	.string		"O selected"
-	CHOOSE_SYMBOL_MSG4:	.string		"X selected"
+	CHOOSE_SYMBOL_MSG1:	.string	"Move the cursor with AD,"
+	CHOOSE_SYMBOL_MSG2:	.string	"and confirm your symbol with ENTER"
+	CHOOSE_SYMBOL_MSG3:	.string	"O selected"
+	CHOOSE_SYMBOL_MSG4:	.string	"X selected"
 
 	CHOOSE_DIFFICULTY_MSG1:	.string	"EASY selected"
 	CHOOSE_DIFFICULTY_MSG2:	.string	"MEDIUM selected"
@@ -37,10 +40,6 @@
 	END_MSG5:	.string "YOU LOST!"
 	END_MSG6:	.string "TIE!"
 	END_MSG7:	.string "THANK YOU FOR PLAYING!"
-
-	# counter of wins (0xww), losses (0xll), ties (0xtt), and games played (0xgg)
-	THE_BIG_COUNTER:	.word	0x00000000	# 0xww_ll_tt_gg
-
 
 .text
 #-------------------------------# Main Program #-------------------------------#
@@ -64,6 +63,7 @@
 				bgez	a0, END
 		 		j		LOOP
 
-		END:	j	END_SCREEN
+		END:	call	HIGHLIGHT_WIN
+				j		END_SCREEN
 
-.include "all.s"
+.include "all_includer.s"

@@ -104,6 +104,7 @@ CHECK_DIAGONALS:
 	beqz	t1, NEXT_DIAGONAL
 	bne		t1, t2, NEXT_DIAGONAL
 	bne		t2, t3, NEXT_DIAGONAL
+	
 	mv		a0, t1
 	j		END_CHECK_DIAGONALS
 	NEXT_DIAGONAL:
@@ -148,14 +149,14 @@ UPDATE_COUNTERS:
 
 	# gets each counter separately
 	la		t0, THE_BIG_COUNTER
-	lw		t0, 0(t0)
+	lw		t0, 0(t0)				# t0 <- 0xww_ll_tt_gg
     srli    t1, t0, 24              # t1 <- 0x00_00_00_ww = win counter
-    slli    t2, t0, 8
+    slli    t2, t0, 8				# t2 <- 0xll_tt_gg_00
     srli    t2, t2, 24              # t2 <- 0x00_00_00_ll = loss counter
-    slli    t3, t0, 16
-    srli    t3, t0, 24              # t3 <- 0x00_00_00_tt = tie counter
-    slli    t4, t0, 24
-    srli    t4, t0, 24              # t4 <- 0x00_00_00_gg = games played counter
+    slli    t3, t0, 16				# t3 <- 0xtt_gg_00_00
+    srli    t3, t3, 24              # t3 <- 0x00_00_00_tt = tie counter
+    slli    t4, t0, 24				# t4 <- 0xgg_00_00_00
+    srli    t4, t4, 24              # t4 <- 0x00_00_00_gg = games played counter
 
 	addi	t4, t4, 1				# one more game has ended
 	

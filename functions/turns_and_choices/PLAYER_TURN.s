@@ -130,8 +130,6 @@ CURSOR_RIGHT:
     j       GAME_KEYPOLL
 
 TRY_SQUARE: 
-    li      s2, 1
-    la      a4, O_SYMBOL
     # sees if SQUARE is occupied, marks it if not
     call    CONVERT_POS_TO_IND  # converts bmp position to BOARD index
     
@@ -140,18 +138,11 @@ TRY_SQUARE:
     lbu     t1, 0(t0)           # t1 = status of SQUARE
 
     bnez    t1, GAME_KEYPOLL    # if occupied, keypoll again
+    li      s2, 1
     sb      s2, 0(t0)           # updates BOARD
 
-    beqz    s0, PLAYER_CHOSE_X
-
+    call    GET_PLAYER_SYMBOL
     call    MARK_SQUARE         # marks the current SQUARE, if empty (animation included)
     
-    # animation done, keypoll again
+    # animation done, PC will play
     j       END_PLAYER_TURN
-    
-    PLAYER_CHOSE_X:
-        la      a4, X_SYMBOL
-        call    MARK_SQUARE         # marks the current SQUARE, if empty (animation included)
-        
-        # animation done, turn's over
-        j       END_PLAYER_TURN

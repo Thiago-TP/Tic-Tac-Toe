@@ -19,11 +19,11 @@ INITIALIZE_VARIABLES:
 	li	s1, 0			# DIFFICULTY flag	(0 => standard difficulty)
 
 	# initialization of WIN_COMBO
-	la	t0, WIN_COMBO
-	li	t1, -1
-	sb	t1, 0(t0)		# sets index 0 as -1
-	sb	t1, 1(t0)		# sets index 1 as -1
-	sb	t1, 2(t0)		# sets index 2 as -1
+	# la	t0, WIN_COMBO
+	# li	t1, -1
+	# sb	t1, 0(t0)		# sets index 0 as -1
+	# sb	t1, 1(t0)		# sets index 1 as -1
+	# sb	t1, 2(t0)		# sets index 2 as -1
 
 	# initialization of CURSOR positions
 	la	t0, CURSOR_POSITION

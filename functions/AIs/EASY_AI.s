@@ -36,9 +36,3 @@ EASY_AI:
 	addi	sp, sp, 4
 	ret	
 		
-GET_PC_SYMBOL:
-	la		a4, X_SYMBOL
-	beqz	s0, PC_GOT_O	
-	ret
-	PC_GOT_O:	la		a4, O_SYMBOL
-				ret

@@ -57,6 +57,18 @@ PRINT_BOARD_SCREEN:
     # print scores
     call    SHOW_SCORES
 
+    # print symbols of PC and PLAYER
+    call    GET_PLAYER_SYMBOL
+    mv      a0, a4
+    li      a1, 0
+    li      a2, 24
+    call    PRINT_GRAY
+
+    call    GET_PC_SYMBOL
+    mv      a0, a4
+    li      a1, 256
+    call    PRINT_GRAY
+
     # recovering of return address 
 	lw		ra, 0(sp)
 	addi	sp, sp, 4
@@ -67,4 +79,3 @@ PLAYING_ON_EASY:    la  a0, CHOOSE_DIFFICULTY_MSG1
 PLAYING_ON_MEDIUM:  la  a0, CHOOSE_DIFFICULTY_MSG2
                     li  a1, 115
                     j   REVEAL_DIFFICULTY
-    

@@ -22,6 +22,12 @@
     .include "../sprites/decorations/SMALL_MARIO.data"
 
 .text
+    .include "../functions/turns_and_choices/CHOOSE_DIFFICULTY.s"
+    .include "../functions/turns_and_choices/CHOOSE_SYMBOL.s"
+    .include "../functions/turns_and_choices/PLAYER_TURN.s"
+    .include "../functions/turns_and_choices/PC_TURN.s"
+    .include "../functions/turns_and_choices/END_SCREEN.s"
+
     .include "../functions/AIs/EASY_AI.s"
     .include "../functions/AIs/MEDIUM_AI.s"
     .include "../functions/AIs/HARD_AI.s"
@@ -30,13 +36,17 @@
     .include "../functions/misc/INITIALIZE_BOARD.s"
     .include "../functions/misc/INITIALIZE_VARIABLES.s"
     .include "../functions/misc/CHECK_END.s"
+    .include "../functions/misc/GET_SYMBOLS.s"
+    .include "../functions/misc/CONVERTS.s"
 
     .include "../functions/prints/BLACK_SCREEN.s"
+    .include "../functions/prints/HIGHLIGHT_WIN.s"
     .include "../functions/prints/MARK_SQUARE.s"
     .include "../functions/prints/PRINT_BOARD_SCREEN.s"
     .include "../functions/prints/PRINT_CHAR.s"
     .include "../functions/prints/PRINT_DIFFICULTY_SCREEN.s"
     .include "../functions/prints/PRINT_END_SCREEN.s"
+    .include "../functions/prints/PRINT_GRAY.s"
     .include "../functions/prints/PRINT_STRING.s"
     .include "../functions/prints/PRINT_SYMBOL_SCREEN.s"
     .include "../functions/prints/PRINT.s"
@@ -44,8 +54,3 @@
     .include "../functions/prints/STASH_BACKGROUND.s"
     .include "../functions/prints/SHOW_SCORES.s"
 
-    .include "../functions/turns_and_choices/CHOOSE_DIFFICULTY.s"
-    .include "../functions/turns_and_choices/CHOOSE_SYMBOL.s"
-    .include "../functions/turns_and_choices/PLAYER_TURN.s"
-    .include "../functions/turns_and_choices/PC_TURN.s"
-    .include "../functions/turns_and_choices/END_SCREEN.s"

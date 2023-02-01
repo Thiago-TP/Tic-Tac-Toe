@@ -51,11 +51,11 @@ SHOW_SCORES:
     # gets each counter separately
     srli    s1, t0, 24              # s1 <- 0x00_00_00_ww = win counter
     slli    s2, t0, 8
-    srli    s2, t2, 24              # s2 <- 0x00_00_00_ll = loss counter
+    srli    s2, s2, 24              # s2 <- 0x00_00_00_ll = loss counter
     slli    s3, t0, 16
-    srli    s3, t0, 24              # s3 <- 0x00_00_00_tt = tie counter
+    srli    s3, s3, 24              # s3 <- 0x00_00_00_tt = tie counter
     slli    s4, t0, 24
-    srli    s4, t0, 24              # s4 <- 0x00_00_00_gg = games played counter
+    srli    s4, s4, 24              # s4 <- 0x00_00_00_gg = games played counter
 
     # prints each number in its appropriate location
     addi    a0, s1, 48              # win count
