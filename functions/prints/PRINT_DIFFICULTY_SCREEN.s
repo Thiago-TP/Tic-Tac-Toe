@@ -30,15 +30,23 @@ PRINT_DIFFICULTY_SCREEN:
 	call	PRINT_STRING	# "and confirm your symbol with ENTER"
 
 	# printing of the difficulty symbols
-	la		a0, GREEN_SHELL	# 40x40 sprite of EASY difficulty
-	li		a1, 50
-	li		a2, 100
+	la		a0, SQUARE		# 64x64 sprite of BOARD tile
+	li		a1, 32
+	li		a2, 88
 	call	PRINT
-	la		a0, RED_SHELL	# 40x40 sprite of MEDIUM difficulty
-	li		a1, 140
+	la		a0, GREEN_SHELL	# 64x64 sprite of EASY difficulty
 	call	PRINT
-	la		a0, SPIKY_SHELL	# 40x40 sprite of MEDIUM difficulty
-	li		a1, 230
+
+	la		a0, SQUARE		# 64x64 sprite of BOARD tile
+	li		a1, 128
+	call	PRINT
+	la		a0, RED_SHELL	# 64x64 sprite of MEDIUM difficulty
+	call	PRINT
+
+	la		a0, SQUARE		# 64x64 sprite of BOARD tile
+	li		a1, 224
+	call	PRINT
+	la		a0, SPIKY_SHELL	# 64x64 sprite of HARD difficulty
 	call	PRINT
 
 	# recovering of return address 

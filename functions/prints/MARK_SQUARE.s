@@ -30,8 +30,6 @@ MARK_SQUARE:
     # falling animation into position (a1, s2)
     mv      a0, a4
     li      a2, 0   # initial height  
-    li      a5, 64  # stashed background width
-    li      a6, 64  # stashed background height
     FALL_LOOP:
         # stashes the background of current position for clean up later
         call    STASH_BACKGROUND

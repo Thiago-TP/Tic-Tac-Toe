@@ -1,3 +1,13 @@
+#####################################################################################
+#	Initializes BOARD screen, printing the BOARD, status messages, critters, etc.	#
+#	and leaving CURSOR at the upper left corner.									#
+#####################################################################################
+#	- Input -	#
+#	None		#
+#####################################
+#	- Output -						#
+#	printed screen on both frames	#
+#####################################
 INITIALIZE_BOARD:
 	# return address shall be preserved as other functions will be called
     addi    sp, sp, -4

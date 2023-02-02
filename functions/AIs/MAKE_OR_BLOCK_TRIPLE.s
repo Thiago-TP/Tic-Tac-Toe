@@ -66,11 +66,11 @@ TRIPLE_IN_COLUMNS:
     call    TRIPLE_IN_COLUMN
     bgtz    a1, END_TRIPLE_IN_COLUMNS
         
-    addi    t0, t0, 3
+    addi    t0, t0, 1
     call    TRIPLE_IN_COLUMN
     bgtz    a1, END_TRIPLE_IN_COLUMNS
 
-    addi    t0, t0, 3
+    addi    t0, t0, 1
     call    TRIPLE_IN_COLUMN
     bgtz    a1, END_TRIPLE_IN_COLUMNS
 
@@ -109,13 +109,7 @@ TRIPLE_IN_LINE:
     li      t4, 0
     li      t5, 1
     li      t6, 2
-    beqz    t1, CASE_0XX
-    beqz    t2, CASE_X0X
-    beqz    t3, CASE_XX0
-    # recovering of return address 
-    lw		ra, 0(sp)
-    addi	sp, sp, 4
-    ret
+    j       CASES_SWITCH
 TRIPLE_IN_COLUMN:
     # return address shall be preserved as other functions will be called
     addi    sp, sp, -4
@@ -127,13 +121,7 @@ TRIPLE_IN_COLUMN:
     li      t4, 0
     li      t5, 3
     li      t6, 6
-    beqz    t1, CASE_0XX
-    beqz    t2, CASE_X0X
-    beqz    t3, CASE_XX0
-    # recovering of return address 
-    lw		ra, 0(sp)
-    addi	sp, sp, 4
-    ret
+    j       CASES_SWITCH
 TRIPLE_IN_MAIN_DIAGONAL:
     # return address shall be preserved as other functions will be called
     addi    sp, sp, -4
@@ -145,13 +133,7 @@ TRIPLE_IN_MAIN_DIAGONAL:
     li      t4, 0
     li      t5, 4
     li      t6, 8
-    beqz    t1, CASE_0XX
-    beqz    t2, CASE_X0X
-    beqz    t3, CASE_XX0
-    # recovering of return address 
-    lw		ra, 0(sp)
-    addi	sp, sp, 4
-    ret
+    j       CASES_SWITCH
 TRIPLE_IN_OTHER_DIAGONAL:
     # return address shall be preserved as other functions will be called
     addi    sp, sp, -4
@@ -163,6 +145,8 @@ TRIPLE_IN_OTHER_DIAGONAL:
     li      t4, 2
     li      t5, 4
     li      t6, 6
+
+CASES_SWITCH:
     beqz    t1, CASE_0XX
     beqz    t2, CASE_X0X
     beqz    t3, CASE_XX0
@@ -177,15 +161,7 @@ CASE_0XX:   bne     t2, t3, END_CHECK_TRIPLE
             la      a0, BOARD
             sub     a0, t0, a0
             add     a0, a0, t4
-            call    CONVERT_IND_TO_POS
-            call    MARK_SQUARE
-            
-            call    CONVERT_POS_TO_IND
-            la      t1, BOARD
-            add     t0, t0, t1
-            li      t1, 2
-            sb      t1, 0(t0)   
-            j       END_CHECK_TRIPLE 
+            j       CLOSE_CASE 
 
 CASE_X0X:   bne     t1, t3, END_CHECK_TRIPLE
             bne     s11, t1, END_CHECK_TRIPLE
@@ -193,15 +169,7 @@ CASE_X0X:   bne     t1, t3, END_CHECK_TRIPLE
             la      a0, BOARD
             sub     a0, t0, a0
             add     a0, a0, t5
-            call    CONVERT_IND_TO_POS
-            call    MARK_SQUARE
-
-            call    CONVERT_POS_TO_IND
-            la      t1, BOARD
-            add     t0, t0, t1
-            li      t1, 2
-            sb      t1, 0(t0) 
-            j       END_CHECK_TRIPLE  
+            j       CLOSE_CASE  
 
 CASE_XX0:   bne     t1, t2, END_CHECK_TRIPLE
             bne     s11, t1, END_CHECK_TRIPLE
@@ -209,18 +177,18 @@ CASE_XX0:   bne     t1, t2, END_CHECK_TRIPLE
             la      a0, BOARD
             sub     a0, t0, a0
             add     a0, a0, t6
-            call    CONVERT_IND_TO_POS
-            call    MARK_SQUARE
 
-            call    CONVERT_POS_TO_IND
-            la      t1, BOARD
-            add     t0, t0, t1
-            li      t1, 2
-            sb      t1, 0(t0) 
-            j       END_CHECK_TRIPLE 
-
+CLOSE_CASE:
+    call    CONVERT_IND_TO_POS
+    call    MARK_SQUARE
+    
+    call    CONVERT_POS_TO_IND
+    la      t1, BOARD
+    add     t0, t0, t1
+    li      t1, 2
+    sb      t1, 0(t0) 
 END_CHECK_TRIPLE:
     # recovering of return address 
     lw		ra, 0(sp)
     addi	sp, sp, 4
-    ret     
+    ret    

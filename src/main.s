@@ -2,9 +2,7 @@
 	BOARD:					.byte 	0, 0, 0,	# state matrix of each board square 
 									0, 0, 0, 	# 0=empty square, 1=occupied ny PLAYER, 2=occupied by PC
 									0, 0, 0	
-	WIN_COMBO:				.byte 0, 1, 2	# indexes of the winning combination (initialized as -1 to avoid pseudo win)
-	CURSOR_POSITION:		.half 50, 100 		# keeps the desired (x, y) bitmap position of the cursor for animation purposes
-	CURSOR_OLD_POSITION:	.half 50, 100		# keeps the current (x, y) bitmap position of the cursor for animation purposes
+	WIN_COMBO:				.byte	-1,-1,-1	# indexes of the winning combination (initialized as -1 to avoid pseudo win)
 	
 	.eqv	FRAME_ADDRESS	0xFF200604			# memory address where value of frame being shown is kept
 	.eqv	KEY_ADDRESS		0xFF200000			# memory address where value of keyboard input is kept

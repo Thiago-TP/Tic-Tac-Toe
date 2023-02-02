@@ -1,5 +1,5 @@
 #########################################################################
-#	Destacks sprite a5xa6 at bmp position (a1, a2) in hidden frame	#
+#	Destacks sprite 64x64 at bmp position (a1, a2) in hidden frame	#
 #########################################################################
 RETURN_BACKGROUND:
 	li 	t0, 0xFF0 	# carrega 0xFF0 em t0
@@ -16,8 +16,8 @@ RETURN_BACKGROUND:
       
         mv  	t1, zero      	# zera t1
         mv  	t2, zero      	# zera t2
-        mv 	t3, a5     	# carrega a largura em t3
-        mv 	t4, a6     	# carrega a altura em t4 
+        li      t3, 64
+        li      t4, 64
         
         mul	t6, t3, t4	# t6 <- quantidade de pixels
         add	t6, sp, t6  	# t6  <- endereco do primeiro byte do fundo

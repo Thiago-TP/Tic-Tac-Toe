@@ -2,7 +2,6 @@
 #   Highlights the winning line, if there was one   #
 #####################################################
 #   - Inputs -          #
-#   a0 = game state     #
 #   WIN_COMBO struct    #
 #########################
 #   - Outputs -     #
@@ -13,8 +12,6 @@ HIGHLIGHT_WIN:
     addi    sp, sp, -8
     sw      ra, 0(sp)
     sw      a0, 4(sp)
-
-    beqz    a0, NO_HIGHLIGHT 
 
     # get winning indexes's values
     la      t0, WIN_COMBO
@@ -40,7 +37,10 @@ HIGHLIGHT_WIN:
     # shows frame 0
     li      t0, FRAME_ADDRESS
     sw      zero, 0(t0)
-    fpg:    j fpg
+    
+    # dead time so PLAYER can see the final move
+    li      a0, 2000
+    call    SLEEP
     
     NO_HIGHLIGHT:
         # recovering of return address 
@@ -94,3 +94,22 @@ GRAY_TILE:
     lw      ra, 0(sp)
     addi    sp, sp, 4
 	ret						# image has been grayed out, we are done
+
+
+#############################################
+#   Freezes the game for a given duration.  #
+#############################################
+#   - Input -           #
+#   a0 = duration in ms #
+#########################
+#   - Output -  #
+#   None        #
+#################
+SLEEP:  
+    csrr    t0, time 
+    add     t0, t0, a0
+    SLEEP_LOOP:
+        csrr    t1, time 
+        sltu    t1, t0, t1 
+        beqz    t1, SLEEP_LOOP
+    ret 

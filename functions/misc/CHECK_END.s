@@ -60,7 +60,17 @@ CHECK_LINE:
 	beqz	t1, END_CHECK_LINE
 	bne		t1, t2, END_CHECK_LINE
 	bne		t2, t3, END_CHECK_LINE
+
 	mv		a0, t1
+	la 		t2, BOARD
+	sub 	t2, t0, t2
+	la		t0, WIN_COMBO
+	mv		t1, t2
+	sb 		t1, 0(t0)
+	addi	t1, t2, 1
+	sb 		t1, 1(t0)
+	addi	t1, t2, 2
+	sb 		t1, 2(t0)
 	END_CHECK_LINE:
 		ret
 
@@ -90,7 +100,17 @@ CHECK_COLUMN:
 	beqz	t1, END_CHECK_COLUMN
 	bne		t1, t2, END_CHECK_COLUMN
 	bne		t2, t3, END_CHECK_COLUMN
+
 	mv		a0, t1
+	la 		t2, BOARD
+	sub 	t2, t0, t2
+	la		t0, WIN_COMBO
+	mv		t1, t2
+	sb 		t1, 0(t0)
+	addi	t1, t2, 3
+	sb 		t1, 1(t0)
+	addi	t1, t2, 6
+	sb 		t1, 2(t0)
 	END_CHECK_COLUMN:
 		ret
 
@@ -106,6 +126,13 @@ CHECK_DIAGONALS:
 	bne		t2, t3, NEXT_DIAGONAL
 	
 	mv		a0, t1
+	la 		t0, WIN_COMBO
+	li		t1, 0
+	sb 		t1, 0(t0)
+	li		t1, 4
+	sb 		t1, 1(t0)
+	li		t1, 8
+	sb 		t1, 2(t0)
 	j		END_CHECK_DIAGONALS
 	NEXT_DIAGONAL:
 		lb		t1, 2(t0)
@@ -114,7 +141,15 @@ CHECK_DIAGONALS:
 		beqz	t1, END_CHECK_DIAGONALS
 		bne		t1, t2, END_CHECK_DIAGONALS
 		bne		t2, t3, END_CHECK_DIAGONALS
-		mv		a0, t1	
+
+		mv		a0, t1
+		la 		t0, WIN_COMBO
+		li		t1, 2
+		sb 		t1, 0(t0)
+		li		t1, 4
+		sb 		t1, 1(t0)
+		li		t1, 6
+		sb 		t1, 2(t0)	
 	END_CHECK_DIAGONALS:
 		ret
 

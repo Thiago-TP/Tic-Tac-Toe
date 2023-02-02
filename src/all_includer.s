@@ -2,11 +2,7 @@
 #	This file imports all functions and sprites necessary for the running of main.s #
 #####################################################################################
 .data
-    .include "../sprites/CHAR_TABLE.data"
-
     .include "../sprites/tiles/CURSOR.data"
-    .include "../sprites/tiles/SMALL_CURSOR.data"
-    .include "../sprites/tiles/SMALL_CURSOR_HUSK.data"
     .include "../sprites/tiles/O_SYMBOL.data"
     .include "../sprites/tiles/X_SYMBOL.data"
     .include "../sprites/tiles/SQUARE.data"
@@ -20,6 +16,8 @@
     .include "../sprites/decorations/PEACH.data"
     .include "../sprites/decorations/SMALL_BOWSER.data"
     .include "../sprites/decorations/SMALL_MARIO.data"
+
+    .include "../sprites/CHAR_TABLE.data"
 
 .text
     .include "../functions/turns_and_choices/CHOOSE_DIFFICULTY.s"
@@ -40,6 +38,7 @@
     .include "../functions/misc/CONVERTS.s"
 
     .include "../functions/prints/BLACK_SCREEN.s"
+    .include "../functions/prints/GRAY_PIXEL.s"
     .include "../functions/prints/HIGHLIGHT_WIN.s"
     .include "../functions/prints/MARK_SQUARE.s"
     .include "../functions/prints/PRINT_BOARD_SCREEN.s"
@@ -53,4 +52,3 @@
     .include "../functions/prints/RETURN_BACKGROUND.s"
     .include "../functions/prints/STASH_BACKGROUND.s"
     .include "../functions/prints/SHOW_SCORES.s"
-

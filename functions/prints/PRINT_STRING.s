@@ -14,17 +14,16 @@
 #####################################
 
 PRINT_STRING:	
-	addi	sp, sp, -12		# aloca espaco
+	addi	sp, sp, -8		# aloca espaco
     sw		ra, 0(sp)		# salva ra
-    sw		s0, 4(sp)		# salva s0
-    sw		a1, 8(sp)		# salva a1
+    sw		a1, 4(sp)		# salva a1
 
-    mv		s0, a0          # s0 = endereco do caractere na string
+    mv		s2, a0          # s2 = endereco do caractere na string
 
 	LOOP_PRINT_STRING:
-		lb		a0, 0(s0)                 	# le em a0 o caracter a ser impresso
+		lb		a0, 0(s2)                 	# le em a0 o caracter a ser impresso
 
-		beq     a0, zero, FIM_PRINT_STRING	# string ASCIIZ termina com NULL
+		beqz     a0, FIM_PRINT_STRING		# string ASCIIZ termina com NULL
 
 		call    PRINT_CHAR       			# imprime char
 				
@@ -35,13 +34,14 @@ PRINT_STRING:
 		mv    	a1, zero					# volta a coluna zero
 
 		NAO_PULA_LINHA:	
-			addi    s0, s0, 1	# proximo caractere
+			addi    s2, s2, 1	# proximo caractere
 		
 		j       LOOP_PRINT_STRING       	# volta ao loop
 
 	FIM_PRINT_STRING:	
+		mv 		a0, s2
+		
 		lw      ra, 0(sp)   # recupera ra
-		lw 		s0, 4(sp)	# recupera s0
-		lw 		a1, 8(sp)	# recupera a1
-    	addi    sp, sp, 12	# libera espaco
+		lw 		a1, 4(sp)	# recupera a1
+    	addi    sp, sp, 8	# libera espaco
 		ret      	    	# retorna
